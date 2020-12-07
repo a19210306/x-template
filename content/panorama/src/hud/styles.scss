@@ -2,3 +2,48 @@
     width: 100%;
     height: 100%;
 }
+
+.miniMapBackGroud{
+    width: 100%;
+    height: 100%;
+    background-color: sandybrown;
+    opacity: 0.5;
+}
+
+.map{
+    width: 90%;
+    height: 90%;
+    align:center center;
+    overflow: scroll;
+    #HorizontaiScrolball{
+        visibility:collapse;
+    }
+    #VerticalScrolball{
+        visibility:collapse;
+    }
+    #ScrollThumb{
+        visibility: collapse;
+    }
+}
+
+.mapframe{
+    width: 2048px;
+    height: 2048px;
+    background-color: royalblue;
+}
+
+.main-minimap{
+    width: 1200px;
+    height: 800px;
+    align:center center;
+    margin-bottom:80px;
+}
+
+
+.null{
+    background-image: url("file://{images}/custom_game/test/1.png");
+    background-image: url("file://{images}/custom_game/test/2.png");
+    background-image: url("file://{images}/custom_game/test/3.png");
+    background-image: url("file://{images}/custom_game/test/4.png");
+    background-image: url('file://{images}/custom_game/test/minimap_icon_ship.png');
+}

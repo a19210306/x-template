@@ -1,0 +1,30 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "global_lit_simple.vfx"
+
+	//---- Fullbright ----
+	F_FULLBRIGHT 1
+
+	//---- Normal Maps ----
+	F_NORMAL_MAP 1
+
+	//---- Scroll UV ----
+	F_SCROLL_UV 1 // Scroll Color Only
+
+	//---- Color ----
+	g_vColorTint "[1.000000 0.600000 0.000000 0.000000]"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[5.000 5.000]"
+	TextureColor "materials/magma/b38021912c32c124b063302428e64cfe.jpg"
+
+	//---- Normal Map ----
+	g_flBumpStrength "1.000"
+	TextureNormal "materials/magma/0c794ae536776b418de0e0db3104f478.jpg"
+
+	//---- Scroll UV ----
+	g_flScrollUvSpeed "0.050"
+	g_vScrollUvDirection "[0.000 1.000]"
+	TextureScrollSpeed "materials/default/default.tga"
+}

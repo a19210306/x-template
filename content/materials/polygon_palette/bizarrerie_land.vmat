@@ -1,0 +1,24 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "global_lit_simple.vfx"
+
+	//---- Specular ----
+	F_SPECULAR 1
+
+	//---- Color ----
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	TextureColor "materials/polygon_palette/volcanic_island.psd"
+
+	//---- Self Illum ----
+	TextureSelfIllumMask "[0.528000 0.528000 0.528000 0.000000]"
+
+	//---- Specular ----
+	g_flSpecularBloom "0.074"
+	g_flSpecularIntensity "1.441"
+	TextureBloom "[0.517000 0.517000 0.517000 0.000000]"
+	TextureReflectance "[0.500000 0.500000 0.500000 0.000000]"
+}

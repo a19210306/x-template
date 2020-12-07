@@ -1,5 +1,5 @@
 {
-    "name": "ts_template",
+    "name": "nav",
     "description": "a ts-react template for dota2 modding, together with some helper scripts",
     "license": "MIT",
     "repository": "https://github.com/XavierCHN/x-template",
@@ -22,7 +22,11 @@
         "dev:localization": "node scripts/localization.js --watch",
         "dev:jssync": "node scripts/kv_js_sync.js --watch"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@types/raf": "^3.4.0",
+        "mation": "0.0.2",
+        "raf": "^3.4.1"
+    },
     "devDependencies": {
         "@types/react": "^16.9.49",
         "aes-js": "^3.1.2",

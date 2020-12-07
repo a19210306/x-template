@@ -7,6 +7,8 @@ publish
 custom_game_whitelist.txt
 panorama_debugger.cfg
 game/resource/word_filter_cache_1.dat
+content/models
+content/materils
 *.bin
 *.pyc
 *.vcss_c
