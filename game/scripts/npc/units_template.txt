@@ -1,6 +1,6 @@
 // generate with Xavier's kv generator https://github.com/XavierCHN/x-template
 "XLSXContent" {
-	"npc_kv_generator_test" {
+	"npc_dota_base_units" {
 		"Searchable" "1"
 		"Cost" "1"
 		"BaseClass" "npc_dota_creature"

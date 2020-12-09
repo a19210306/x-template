@@ -13,19 +13,17 @@ const Anniu = () => {
    return (
        <Panel style={{flowChildren:'down'}}>
        <TextButton text="点击刷新地图" onactivate={()=>{
-       GameEvents.SendCustomGameEventToServer("MapUpdate",{})
-       $.Msg("123")}} 
+       GameEvents.SendCustomGameEventToServer("MapUpdate",{})}} 
    style={{backgroundColor:"blue",width:'200px',height:'70px'}}
    />
           <TextButton text="开启关闭地图" onactivate={()=>{
-       GameEvents.SendCustomGameEventToServer("MapUpdate",{})
        __ui_sendmassage!({_type:'togglePanel',_operation_panel:'minimap'})}} 
    style={{backgroundColor:"blue",width:'200px',height:'70px'}}
    />
    </Panel>)
 }
 
-//
+
 render(
 <>
 <GContext>
@@ -39,5 +37,5 @@ render(
     // GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
     GameUI.SetCameraDistance(1100)
     GameUI.SetCameraPitchMax(90)
-    GameUI.SetCameraPitchMin(90)//
+    GameUI.SetCameraPitchMin(90)
 })();

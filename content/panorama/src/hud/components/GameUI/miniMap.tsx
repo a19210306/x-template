@@ -3,7 +3,7 @@ import { render, useGameEvent, useNetTableValues } from 'react-panorama';
 import raf from 'raf';
 import { Context, ui_list, ui_state } from './Gcontext';
 
-
+//
 
 const My_coor = memo(()=>{
     const {__ui_Manager,__register } = useContext(Context)
@@ -40,6 +40,7 @@ const Map = memo(()=>{
     return <Panel className="map">
            <Panel className="mapframe">
            <My_coor/>
+           <Land/>
            </Panel>
            </Panel>
 })
@@ -47,10 +48,35 @@ const Map = memo(()=>{
 const Backgroud = memo(() => {
     return <Panel className="miniMapBackGroud"/>
 })
-
+//
 const Land = memo(()=>{
+    const land = useNetTableValues('map')
+    const jsx_list:JSX.Element[] = []
+    
+    useEffect(()=>{
+    })
 
-    return <Image/>    
+    const CreateLane = useCallback(()=>{
+        for(let value in land.date)
+        {
+            $.Msg(land.date[value].angle + "shua chu lai le")
+            let style = { position:`${land.date[value].widthindex /16 }px ${land.date[value].heightindex /16}px 0px}`, 
+                          zIndex:-1,
+                          align:'center center',
+                        } 
+            jsx_list.push(<Image key={Math.random()} style={{...style}} src={"file://{images}/custom_game/minimap/land/" + land.date[value].landName + ".png"}
+            scaling="none"
+            />)
+        }
+            return jsx_list
+    },[land])
+
+
+    return(
+        <>
+        {CreateLane()}
+        </>
+    )
 })
 
 export const MiniMap = () => {
@@ -60,7 +86,7 @@ export const MiniMap = () => {
         <Panel className="main-minimap" ref={(panel)=>{__register!.current!({_active:ui_state.开启,_type:'addUilist',_operation_panel:ui_list.大地图,_Panel:panel!})}}>
             <Backgroud/>
             <Map/>
-        </Panel>)//
+        </Panel>)
 }
 
 export default  memo(MiniMap)

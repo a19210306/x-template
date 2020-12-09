@@ -1,4 +1,5 @@
-import { __LandbetweenDistance, __LandCount } from "./Const";
+import { __LandbetweenDistance,LandAngle, __LandCount,LandPrefixName} from "./Const";
+import { LandGenerator } from './Lands'
 import { reloadable } from '../lib/tstl-utils';
 
 
@@ -9,6 +10,7 @@ export class GenerateMap {
     private _original:number;
     private _smooth:number
     private _border:number
+    private _LandPrefixName:string
 
 
     public constructor(smooth:32|64|128|256,border:0.1|0.2|0.3|0.4){
@@ -17,10 +19,10 @@ export class GenerateMap {
         this._original = 32768
         this._size = this._original / smooth 
         this._border = border
+        this._LandPrefixName = LandPrefixName
         this.Init2DArray()
         this.InitMap2D()
     }
-
     
     Init2DArray(){
         for(let i = 0 ; i < this._size ; i++)
@@ -41,13 +43,13 @@ export class GenerateMap {
 
 
     InitLand(){
-        let tmp:{widthindex:number,heightindex:number}[] = []
+        let tmp:{widthindex:number,heightindex:number,angle:number,landName:string}[] = []
         let count = 0
-        while(tmp[3] == null)
+        while(tmp[__LandCount] == null)
         {
             let on_off = false;
-            let widthIndex = RandomInt(1,math.floor(this._size * this._border))
-            let heightIndex = RandomInt(1,math.floor(this._size * this._border))
+            let widthIndex = RandomInt(-math.floor(this._size * this._border),math.floor(this._size * this._border))
+            let heightIndex = RandomInt(-math.floor(this._size * this._border),math.floor(this._size * this._border))
             let _my_vec = Vector(widthIndex,heightIndex)
             if(tmp)
             {
@@ -62,9 +64,10 @@ export class GenerateMap {
             }
             if(on_off == false)
             {
-                count++
-                print(count)
-                tmp.push({widthindex:widthIndex * this._smooth,heightindex:heightIndex * this._smooth})
+                let t = LandGenerator.getinstance().tryCreateLand(Vector(widthIndex * this._smooth,
+                    heightIndex * this._smooth,0),'land')
+                if(t.angle != -1)
+                tmp.push({widthindex:widthIndex * this._smooth,heightindex:heightIndex * this._smooth,angle:t.angle,landName:t.name})
             }
         }
         return tmp

@@ -1,7 +1,7 @@
 import { reloadable } from "./lib/tstl-utils";
 import './lib/timers'
 import "./abilities/modifier/ship_move_speed"
-import { GenerateMap } from "./Generator/Generator_main";
+import { GenerateMap } from "./Land/Generator_main";
 const heroSelectionTime = 10;
 
 declare global {
@@ -9,40 +9,6 @@ declare global {
         Addon: GameMode;
         Map:GenerateMap;
     }
-}
-
-let test = [
-    {
-        x:-913.79,y:1556.73
-    }
-    ,
-    {
-        x:1151.79,y:1361.35
-    }
-    ,
-    {
-        x:1526.38,y:-747.409
-    }
-    ,
-    {
-        x:34.6942,y:-1737.82
-    }
-    ,
-    {
-        x:-1198.34,y:-1488.39
-    }
-    ,
-    {
-        x:-2206.89,y:88.3096
-    }
-    ,
-    {
-        x:-1518.07,y:766.255
-    }
-]
-
-function ratation(vec:{x:number,y:number},angles:number):Vector{
-    return Vector(vec.x * math.cos(angles) - vec.y * math.sin(angles),vec.x * math.sin(angles) + vec.y * math.cos(angles),256)
 }
 
 @reloadable
@@ -54,8 +20,6 @@ export class GameMode {
 
     public static Activate(this: void) {
         GameRules.Addon = new GameMode();
-        GameRules.Map = new GenerateMap(256,0.4)
-        CustomNetTables.SetTableValue("map","date",GameRules.Map.InitLand())
     }
 
     constructor() {
@@ -79,6 +43,10 @@ export class GameMode {
     }
 
     public OnStateChange(): void {
+        if(GameRules.State_Get() == DOTA_GameState.DOTA_GAMERULES_STATE_PRE_GAME)
+        {
+            GameRules.Map = new GenerateMap(256,0.4)
+        }
     }
     public Reload() {
         print("Script reloaded!");
@@ -86,7 +54,7 @@ export class GameMode {
 
     private OnNpcSpawned(event: NpcSpawnedEvent) {
         let unit = (EntIndexToHScript(event.entindex) as CDOTA_BaseNPC_Hero);
-        unit.SetBaseMoveSpeed(0.01);
+       // unit.SetBaseMoveSpeed(0.01);
         huanzhuang(unit)
         // DOTA_SpawnMapAtPosition("land/ceshi1",Vector(2944,1920,0),false,()=>{},()=>{
         //     test.forEach(vec=>{

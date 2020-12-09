@@ -10,7 +10,7 @@ declare interface CustomNetTableDeclarations {
         hero_list: Record<string, string> | string[];
     };
     map: {
-        date: Record<number,{widthindex:number,heightindex:number}>;
+        date: Record<number,{widthindex:number,heightindex:number,angle:number,landName:string}>;
     };
     custom_net_table_3: {
         key_1: number;
