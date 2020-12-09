@@ -20,6 +20,11 @@ const Anniu = () => {
        __ui_sendmassage!({_type:'togglePanel',_operation_panel:'minimap'})}} 
    style={{backgroundColor:"blue",width:'200px',height:'70px'}}
    />
+             <TextButton text="调试脚本" onactivate={()=>{
+                 GameEvents.SendCustomGameEventToServer("test",{sdsd:123})
+             }}
+   style={{backgroundColor:"blue",width:'200px',height:'70px'}}
+   />
    </Panel>)
 }
 

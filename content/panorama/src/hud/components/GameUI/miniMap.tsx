@@ -3,7 +3,7 @@ import { render, useGameEvent, useNetTableValues } from 'react-panorama';
 import raf from 'raf';
 import { Context, ui_list, ui_state } from './Gcontext';
 
-//
+
 
 const My_coor = memo(()=>{
     const {__ui_Manager,__register } = useContext(Context)
@@ -77,7 +77,7 @@ const Land = memo(()=>{
         {CreateLane()}
         </>
     )
-})
+})//
 
 export const MiniMap = () => {
     const {__register} = useContext(Context)

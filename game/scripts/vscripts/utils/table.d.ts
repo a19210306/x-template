@@ -13,7 +13,7 @@ declare namespace table {
     function random_some<T>(t: T[], count: number): T[];
     function random_with_condition<T>(t: T[], func: (t: Object, k: any, v: T) => boolean): T;
     function filter<T>(t: Object, condition: (t: Object, k: any, v: T) => boolean): T[];
-    function foreach(t: Object, calback: (k: any, v: any) => void): void;
+    function foreach(t: Object, calback: (k: any, v: any) => 'stop'|void): void;
     function make_key_Object(t: Object): Object;
     function is_equal(t1: Object, t2: Object): boolean;
     function random_key(t: Object): any;

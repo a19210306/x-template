@@ -1,3 +1,4 @@
 declare interface CustomGameEventDeclarations {
-	MapUpdate:{};
+	MapUpdate:{}
+	test:any
 }

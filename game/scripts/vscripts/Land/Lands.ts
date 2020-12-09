@@ -1,8 +1,14 @@
 import { Landtemplate, climate, LandCotainerManager } from './LandCotainer';
 import { LandCollision } from './LandColisionList';
-import { LandAngle, LandPrefixName } from './Const';
+import { __floorHeight, __LandAngle, __LandPrefixName } from './Const';
 import { reloadable } from "../lib/tstl-utils";
 import '../utils/table'
+
+
+type tryCreatePackage = {
+    _angle:number,
+    _landName:string,
+}
 
 @reloadable
 class Land implements Landtemplate {
@@ -29,50 +35,40 @@ export class LandGenerator {
         return this.LandGenerator;
     }
 
-    public tryCreateLand(point: Vector,landtype:"land"|"island") {
-        let coliision_unit = CreateUnitByName("npc_dota_hero_earthshaker",Vector(0,0,0),true,null,null,DOTATeam_t.DOTA_TEAM_BADGUYS)
-        let switchCollision = true;
-        let tmp = Object.keys(LandCollision)
-        let tmpShuffle = table.shuffle(tmp)
-         for (let land of tmpShuffle) {
-            switchCollision = true
-            let collisions = LandCollision[land].LandCollisionList;
-            let angle = -1;
-            let original_height = LandCollision[land].LandHeight
-            let anglekey = Object.keys(LandAngle)
-            let tmpangle = table.shuffle(anglekey)
-            for (let j of tmpangle) {
-                let new_angle = collisions.map((value) => {
-                    let pointArray = value.origin.split(" ");
-                    let x = pointArray[0];
-                    let y = pointArray[1];
-                    let vec = Vector(+x, +y, 0);
-                    return RotatePosition(point, QAngle(0, LandAngle[+j], 0), vec);
-                });
-                for (let i of new_angle) {
-                    let height = GetGroundHeight(i, coliision_unit);
-                    print("height"+height)
-                    if (height < -9999999999) {
-                        switchCollision = false;
-                        break;
+    public trySimulation2Create(Wrodorigin:Vector):tryCreatePackage{
+        let ColiisionUnit = CreateUnitByName("npc_dota_hero_earthshaker",
+        Vector(0, 0, 0), true, null, null, DOTATeam_t.DOTA_TEAM_BADGUYS);
+        let LandCollisionKeys = Object.keys(LandCollision)
+        let LandCollisionKeysShuffle = table.shuffle(LandCollisionKeys)
+        let SelectLandName = "" //选择的大陆
+        let SelectAngle:string|number = -1 //选择的角度
+        DeepPrintTable(LandCollisionKeysShuffle)
+        table.foreach(LandCollisionKeysShuffle,(index1,forCollisionKey)=>{
+            if(SelectLandName != "") return
+            table.foreach(LandCollision[forCollisionKey].LandCollisionList,(index2,vector:{origin:string})=>
+            {
+                SelectLandName = forCollisionKey
+                let [x,y] = vector.origin.split(" ")
+                let $x = (+x) + Wrodorigin.x
+                let $y = (+y) + Wrodorigin.y
+                let angleAarry = Object.keys(__LandAngle)
+                angleAarry = table.shuffle(angleAarry)
+                table.foreach(angleAarry,(index,key)=>{
+                    SelectAngle = __LandAngle[key].toString()
+                    let toAnglePoint = RotatePosition(Wrodorigin,QAngle(0,__LandAngle[key],0),Vector($x,$y,0))
+                    if(GetGroundHeight(Vector(+x+Wrodorigin.x,+y+Wrodorigin.y,50),ColiisionUnit) < __floorHeight){
+                        SelectLandName = "" // 一旦发现高度低于海面 立即中止 并把刚才设置的大陆名字置换为空
+                        SelectAngle = -1
+                        return 'stop'
                     }
-                    angle = LandAngle[+j -1];
-                }
-                print(switchCollision)
-                if(switchCollision)
-                {
-                 //   DOTA_SpawnMapAtPosition(`${landtype + "/" + land }`,Vector(point.x,point.y,height),false,()=>{},()=>{},undefined)
-                    let landex = SpawnEntityFromTableSynchronous("prop_dynamic",{
-                        model:`models/land/${land}.vmdl`,
-                        angles:`0 ${angle} 0`,
-                        origin:`${point.x} ${point.x} ${original_height}`
-                    })
-                    print(landex.GetAbsOrigin())
-                    coliision_unit.RemoveSelf()
-                    return {angle:angle,name:land}}
-                }
-            }
-        }
+                })
+            })
+        })
+        print("selectlandname=" + SelectLandName)
+        print("selectAngle=" + SelectAngle)
+        ColiisionUnit.RemoveSelf()
+        return {_angle:SelectAngle,_landName:SelectLandName}
+    }
 }
 
 

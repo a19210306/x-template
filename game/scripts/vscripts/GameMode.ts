@@ -1,7 +1,9 @@
 import { reloadable } from "./lib/tstl-utils";
 import './lib/timers'
 import "./abilities/modifier/ship_move_speed"
-import { GenerateMap } from "./Land/Generator_main";
+import { GenerateMap } from "./Land/2DGenerator";
+import './utils/table'
+import { LandCollision } from './Land/LandColisionList';
 const heroSelectionTime = 10;
 
 declare global {
@@ -28,8 +30,10 @@ export class GameMode {
         ListenToGameEvent("npc_spawned", event => this.OnNpcSpawned(event), undefined);
         CustomGameEventManager.RegisterListener('MapUpdate',(id,player) =>{
             GameRules.Map.InitMap2D()
-            print("niubi")
-            CustomNetTables.SetTableValue("map","date",GameRules.Map.InitLand())
+            CustomNetTables.SetTableValue("map","date",GameRules.Map.tryCreateLand())
+        })
+        CustomGameEventManager.RegisterListener('test',(id,player) =>{
+            this.test()
         })
     }
 
@@ -120,7 +124,11 @@ export class GameMode {
     //         return Vector(0,0,0)
     //     }
     // }
+    test(){
+ 
+    }
 }
+
 
 function huanzhuang(entiti:CDOTA_BaseNPC_Hero){
     let modelname = 'models/ship/sm_prop_shipwreck_01.vmdl';
@@ -128,7 +136,6 @@ function huanzhuang(entiti:CDOTA_BaseNPC_Hero){
     while (model != null) {
         if (model.GetClassname() == "dota_item_wearable") {
             model.RemoveSelf()
-            print("hahah")
         }
         model = model.NextMovePeer();
     }
@@ -136,3 +143,4 @@ function huanzhuang(entiti:CDOTA_BaseNPC_Hero){
     entiti.SetOriginalModel(modelname);
     entiti.SetModelScale(3)
 }
+
