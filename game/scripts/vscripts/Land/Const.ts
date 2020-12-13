@@ -1,5 +1,10 @@
 export const __LandbetweenDistance = 5000
-export const __LandCount = 7
+export const __LandCount = 5
 export const __LandPrefixName = 'land';
 export const __LandAngle = [60,120,180,240,300]
 export const __floorHeight = 31
+export const __border = 1
+export const __size = 32768
+export const __reality =  16384
+export const __default_ground = 0
+export const __land_beetween_distance = 6000

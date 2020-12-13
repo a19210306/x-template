@@ -1,15 +1,19 @@
 import { reloadable } from "./lib/tstl-utils";
 import './lib/timers'
 import "./abilities/modifier/ship_move_speed"
-import { GenerateMap } from "./Land/2DGenerator";
+import { GenerateMap } from './Land/2DGenerator';
 import './utils/table'
 import { LandCollision } from './Land/LandColisionList';
+import { LandGenerator } from './Land/Lands';
+import { __default_ground, __floorHeight } from './Land/Const';
 const heroSelectionTime = 10;
 
 declare global {
     interface CDOTAGamerules {
         Addon: GameMode;
         Map:GenerateMap;
+        hero:CDOTA_BaseNPC_Hero;
+        creep:CDOTA_BaseNPC;
     }
 }
 
@@ -22,15 +26,16 @@ export class GameMode {
 
     public static Activate(this: void) {
         GameRules.Addon = new GameMode();
+        GameRules.hero = undefined;
     }
 
     constructor() {
         this.configure();
         ListenToGameEvent("game_rules_state_change", () => this.OnStateChange(), undefined);
         ListenToGameEvent("npc_spawned", event => this.OnNpcSpawned(event), undefined);
+       // LandGenerator.getinstance().CreateLandEntity()
         CustomGameEventManager.RegisterListener('MapUpdate',(id,player) =>{
-            GameRules.Map.InitMap2D()
-            CustomNetTables.SetTableValue("map","date",GameRules.Map.tryCreateLand())
+            LandGenerator.getinstance().CreateLandEntity()
         })
         CustomGameEventManager.RegisterListener('test',(id,player) =>{
             this.test()
@@ -44,13 +49,26 @@ export class GameMode {
 
         GameRules.SetShowcaseTime(0);
         GameRules.SetHeroSelectionTime(heroSelectionTime);
+        GameRules.GetGameModeEntity().SetExecuteOrderFilter((event:ExecuteOrderFilterEvent)=>{
+            let point = Vector(event.position_x,event.position_y,800);
+            print(point)
+            DeepPrintTable(GameRules.creep)
+            print(GetGroundHeight(point,GameRules.creep))
+            
+            return true
+        },{})
     }
 
     public OnStateChange(): void {
         if(GameRules.State_Get() == DOTA_GameState.DOTA_GAMERULES_STATE_PRE_GAME)
         {
-            GameRules.Map = new GenerateMap(256,0.4)
+            // DOTA_SpawnMapAtPosition("floor",Vector(0,0,0),false,()=>{print("create nav")},()=>{},undefined)
+            GameRules.creep = CreateUnitByName("npc_dota_hero_earthshaker",
+            Vector(0, 0, 0), true, null, null, DOTATeam_t.DOTA_TEAM_BADGUYS);
+            Timers.CreateTimer(1,()=>{CustomNetTables.SetTableValue('ui',"alluiState",{switch:'start'})})
+            GenerateMap.Getinstance().PrintMap2D()
         }
+
     }
     public Reload() {
         print("Script reloaded!");
@@ -58,8 +76,14 @@ export class GameMode {
 
     private OnNpcSpawned(event: NpcSpawnedEvent) {
         let unit = (EntIndexToHScript(event.entindex) as CDOTA_BaseNPC_Hero);
+        if(unit.IsHero())
+        {
+            GameRules.hero = unit;
+            DeepPrintTable(GameRules.hero)
+            print("hero!!!!!!!!!!!!!!!")
+            huanzhuang(unit)
+        }
        // unit.SetBaseMoveSpeed(0.01);
-        huanzhuang(unit)
         // DOTA_SpawnMapAtPosition("land/ceshi1",Vector(2944,1920,0),false,()=>{},()=>{
         //     test.forEach(vec=>{
         //         DebugDrawCircle(Vector(vec.x,vec.y,500).__add(Vector(2944,1920,0)),Vector(255,0,0),100,100,false,10)
@@ -125,7 +149,6 @@ export class GameMode {
     //     }
     // }
     test(){
- 
     }
 }
 
@@ -142,5 +165,32 @@ function huanzhuang(entiti:CDOTA_BaseNPC_Hero){
     entiti.SetModel(modelname);
     entiti.SetOriginalModel(modelname);
     entiti.SetModelScale(3)
+}
+
+function Createblock(){
+    let ColiisionUnit = CreateUnitByName("npc_dota_hero_earthshaker",
+    Vector(0, 0, 0), true, null, null, DOTATeam_t.DOTA_TEAM_BADGUYS);
+    let count = 0
+    for(let w = -7 ; w < 7 ; w++)
+    {
+        for(let h = -7 ; h < 7 ; h++)
+        {
+            print(GetGroundHeight(Vector( w * 2048,h * 2048,200),ColiisionUnit))
+                if(GetGroundHeight(Vector( w * 2048,h * 2048,200),ColiisionUnit) < __floorHeight)
+                {
+                    count++
+                    print("count jjj = " + count)
+                    let point = Vector( w * 2048, h * 2048, 0 )
+                    DOTA_SpawnMapAtPosition("floor",point,false,()=>{print("create nav")},()=>{},undefined)
+                }
+                else
+                {
+                    count++
+                    print("count jjj = " + count)
+                }
+        }
+    }
+    ColiisionUnit.RemoveSelf()
+
 }
 

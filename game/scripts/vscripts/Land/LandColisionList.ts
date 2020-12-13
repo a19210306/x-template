@@ -5,7 +5,7 @@ type Collisions = {
 
 export const LandCollision:Record<string,Collisions> = 
     {land_1 : {
-        LandHeight:-456,
+        LandHeight:-448,
         LandCollisionList:[
             {
                 origin : "3123.9 -3206.62 7.06519"
@@ -40,7 +40,7 @@ export const LandCollision:Record<string,Collisions> =
         ]
     },
     land_2 : {
-        LandHeight:80,
+        LandHeight:64,
         LandCollisionList:[
             {
                 origin : "-2569.53 895.359 34.993"
@@ -69,7 +69,7 @@ export const LandCollision:Record<string,Collisions> =
                 ]
     },
     land_3 : { 
-        LandHeight:220,
+        LandHeight:192,
         LandCollisionList:[
             {
                 origin : "-3483.05 1435.52 9.10962"
@@ -117,6 +117,10 @@ export const LandCollision:Record<string,Collisions> =
         ]
     }
 }
+
+export const Landtetris = [
+    {name:"land_2_deg0",x:3,y:4},
+]
 
 
 

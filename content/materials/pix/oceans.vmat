@@ -1,0 +1,20 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "global_lit_simple.vfx"
+
+	//---- Scroll UV ----
+	F_SCROLL_UV 2 // Scroll All Textures
+
+	//---- Color ----
+	g_vColorTint "[0.584314 0.584314 0.584314 0.000000]"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[0.100 0.100]"
+	TextureColor "materials/pix/oceans.psd"
+
+	//---- Scroll UV ----
+	g_flScrollUvSpeed "1.765"
+	g_vScrollUvDirection "[1.304 -3.978]"
+	TextureScrollSpeed "materials/default/default.tga"
+}

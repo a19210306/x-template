@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { render, useGameEvent, useNetTableValues } from 'react-panorama';
+import { render, useGameEvent, useNetTableKey, useNetTableValues } from 'react-panorama';
 import raf from 'raf';
 import { Context, ui_list, ui_state } from './Gcontext';
 
@@ -36,57 +36,84 @@ const My_coor = memo(()=>{
         style={{...Coordinatemapping,width:'50px',height:'120px'}}
         ref={(panel)=>__register?.current({_Panel:panel!,_active:ui_state.跟随父级的子面板,_operation_panel:'my-coor',_type:'addUilist'})} className="my-coor"/>})
 
-const Map = memo(()=>{
-    return <Panel className="map">
-           <Panel className="mapframe">
-           <My_coor/>
-           <Land/>
-           </Panel>
-           </Panel>
-})
-
 const Backgroud = memo(() => {
     return <Panel className="miniMapBackGroud"/>
 })
-//
-const Land = memo(()=>{
-    const land = useNetTableValues('map')
-    const jsx_list:JSX.Element[] = []
-    
-    useEffect(()=>{
-    })
 
-    const CreateLane = useCallback(()=>{
-        for(let value in land.date)
-        {
-            $.Msg(land.date[value].angle + "shua chu lai le")
-            let style = { position:`${land.date[value].widthindex /16 }px ${land.date[value].heightindex /16}px 0px}`, 
-                          zIndex:-1,
-                          align:'center center',
-                        } 
-            jsx_list.push(<Image key={Math.random()} style={{...style}} src={"file://{images}/custom_game/minimap/land/" + land.date[value].landName + ".png"}
-            scaling="none"
-            />)
-        }
-            return jsx_list
-    },[land])
 
+const Land = ()=>{
+    const [__land,__addland] = useState<{
+        widthindex?: number;
+        heightindex?: number;
+        angle?: number;
+        landName?: string;
+    }[]>([])
+
+    const land = useGameEvent('addLandMinimap',(an)=>{
+        __addland((__land) => {
+            $.Msg(__land)
+            return [...__land,an]
+        })
+    },[])
 
     return(
         <>
-        {CreateLane()}
+        {
+            __land?.map(list => <Image key={Math.random()} style={{
+            position:`${list.widthindex! /16 }px ${list.heightindex! /16}px 0px}`,
+            zIndex:2,
+            align:'center center',
+            preTransformRotate2d:list.angle! + "deg" 
+        }} src={"file://{images}/custom_game/minimap/land/" + list.landName + ".png"}> 
+        <Panel  style ={{
+                        zIndex:2,
+                        fontSize:'30px',
+                        color:'red',
+                        width:'50px',
+                        height:'50px',
+                        backgroundColor:'red',
+                        align:'center center'
+        }}/>
+        </Image>
+        )}
         </>
     )
-})//
+}
+
+const Map = memo(()=>{
+    return <Panel className="map">
+           <Movie src="s2r://panorama/videos/ui/session2.webm" style={{width:'2000px',height:'2000px',zIndex:-2}} repeat={true}  autoplay="onload"  >
+           <Land/>
+           <My_coor/>
+           </Movie>
+           </Panel>
+})
 
 export const MiniMap = () => {
     const {__register} = useContext(Context)
+    const __gameuistate = useNetTableKey("ui",'alluiState')
 
-    return(
-        <Panel className="main-minimap" ref={(panel)=>{__register!.current!({_active:ui_state.开启,_type:'addUilist',_operation_panel:ui_list.大地图,_Panel:panel!})}}>
-            <Backgroud/>
-            <Map/>
-        </Panel>)
+    useEffect(()=>{
+    })
+
+    const fefresh = useCallback(() => {
+        if(__gameuistate && __gameuistate.switch == 'start')
+        {
+            return ( 
+                <Panel className="main-minimap" ref={(panel)=>{__register!.current!({_active:ui_state.开启,_type:'addUilist',_operation_panel:ui_list.大地图,_Panel:panel!})}}>
+                <Backgroud/>
+                <Map/>
+                </Panel>)
+        }
+        else
+        {
+            return <>
+                  </>
+        }//
+    },[__gameuistate])
+
+    return(fefresh()
+        )
 }
 
 export default  memo(MiniMap)

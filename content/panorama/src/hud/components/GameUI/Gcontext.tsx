@@ -1,5 +1,6 @@
 import React , {useState,useCallback, createContext,useEffect,useContext ,useRef,useLayoutEffect, Children, useReducer, Dispatch} from "react";
 import raf from 'raf';
+import { useNetTableKey } from "react-panorama";
 
 
 type GContext = {
@@ -58,8 +59,6 @@ const initRecordPanel:PanelRecord = {
      "root":{_PanelState:ui_state.开启,_PanelInstance:$.GetContextPanel()}
 }
 
-$.Msg("zxc1"+ Object.keys(initRecordPanel))
-
 type Reducer<S,T> = (state:S,action:T) => S
 type UilistReducer = Reducer<PanelRecord,Uiaction>
 
@@ -90,7 +89,7 @@ export const GContext = (props:ContextProps) => {
     const __persend_panel = useRef<Panel|undefined>(undefined)
     const __set_persend_panel = useRef((Panel?:Panel)=>{
         if(__mouse_state.current) return
-        __persend_panel.current = Panel
+        __persend_panel.current = Panel//
     })
     const __mouse_state = useRef(false)
     const __ui_static_store = useRef(initRecordPanel) 
@@ -99,9 +98,11 @@ export const GContext = (props:ContextProps) => {
         __ui_static_store.current = UilistReducer(__ui_static_store.current,action)
     })
 
+    const __gameuistate = useNetTableKey("ui",'alluiState')
+
 
     useEffect(()=>{
-       if(Object.keys(__ui_static_store.current).length != Object.keys(__ui_Manager).length)
+       if(__gameuistate && Object.keys(__ui_static_store.current).length != Object.keys(__ui_Manager).length)
        {
           let obj:PanelRecord = JSON.parse(JSON.stringify(__ui_static_store.current))
           let namelist = Object.keys(obj)
@@ -109,14 +110,13 @@ export const GContext = (props:ContextProps) => {
               __ui_sendmassage({_type:'addUilist',_operation_panel:value,_active:__ui_static_store.current[value]._PanelState,_Panel:__ui_static_store.current[value]._PanelInstance})
           })
        }
-    })
+    },[__gameuistate])
 
     
 
 
     useLayoutEffect(()=>{
         GameUI.SetMouseCallback((event)=>{
-            $.Msg(event)
             if(event == "pressed")
             {
                 __mouse_state.current = true
@@ -134,9 +134,8 @@ export const GContext = (props:ContextProps) => {
         
         useLayoutEffect(()=>{
             raf(function tick(time){
-                if(__persend_panel != undefined && __mouse_state.current == true)
+                if(__persend_panel != undefined && __mouse_state.current == true && GameUI.GetCursorPosition())
                 {
-                    $.Msg(GameUI.GetCursorPosition())
                     __persend_panel.current!.style.marginLeft = `${GameUI.GetCursorPosition()[0]}px`;
                     __persend_panel.current!.style.marginTop = `${GameUI.GetCursorPosition()[1]}px`;
                 }
