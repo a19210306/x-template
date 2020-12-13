@@ -119,7 +119,31 @@ export const LandCollision:Record<string,Collisions> =
 }
 
 export const Landtetris = [
+    {name:"land_1_deg0",x:3,y:3},
+    {name:"land_1_deg60",x:4,y:4},
+    {name:"land_2_deg120",x:4,y:4},
+    {name:"land_1_deg180",x:3,y:4},
+    {name:"land_1_deg240",x:4,y:4},
+    {name:"land_1_deg300",x:4,y:4},
     {name:"land_2_deg0",x:3,y:4},
+    {name:"land_2_deg60",x:3,y:4},
+    {name:"land_2_deg120",x:3,y:3},
+    {name:"land_2_deg180",x:3,y:3},
+    {name:"land_2_deg240",x:4,y:3},
+    {name:"land_2_deg300",x:3,y:3},
+    {name:"land_3_deg0",x:4,y:2},
+    {name:"land_3_deg60",x:4,y:3},
+    {name:"land_3_deg120",x:4,y:3},
+    {name:"land_3_deg180",x:4,y:3},
+    {name:"land_3_deg240",x:4,y:3},
+    {name:"land_3_deg300",x:2,y:4},
+    {name:"land_4_deg0",x:3,y:4},
+    {name:"land_4_deg60",x:4,y:3},
+    {name:"land_4_deg120",x:4,y:3},
+    {name:"land_4_deg180",x:3,y:4},
+    {name:"land_4_deg240",x:4,y:3},
+    {name:"land_4_deg300",x:4,y:3},
+
 ]
 
 

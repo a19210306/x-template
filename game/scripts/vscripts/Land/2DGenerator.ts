@@ -57,7 +57,7 @@ export class GenerateMap {
                     continue;
                 }
                 table.foreach(tmp, (_, v: CreateLandNamePackage) => {
-                    if(this.collisionDetection(this.theEdge(PresentCreateland.package),v.package)){
+                    if(this.collisionDetection(v.package,this.theEdge(PresentCreateland.package))){
                         tmp.push(PresentCreateland)
                         return 'stop'
                     }else{
@@ -71,8 +71,7 @@ export class GenerateMap {
 
         if (tmp) {
             table.foreach(tmp, (_, v: CreateLandNamePackage) => {
-                DOTA_SpawnMapAtPosition("land/test3", Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
-                DebugDrawText(Vector(v.ABSorigin.x * 2048, v.ABSorigin.y * 2048, 100), "这里生成岛", false, 999999);
+                DOTA_SpawnMapAtPosition("land/"+v.name, Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
                 table.foreach(v.package, (k, v: { x?: number; y?: number; }) => {
                     this._map_data[v.x][v.y] = 1;
                 });
@@ -87,8 +86,6 @@ export class GenerateMap {
                 if (this._map_data[i][j] == 0) {
                     DOTA_SpawnMapAtPosition("land/test", Vector(i * 2048, j * 2048, 0), false, () => { print("create nav"); }, () => { }, undefined);
                     DebugDrawText(Vector(i * 2048, j * 2048, 0), i + "," + j.toString(), false, 999999);
-                }else{
-                    DebugDrawCircle(Vector(i * 2048, j * 2048, 300),Vector(0,0,255),10,50,false, 999999)
                 }
             }
         }
@@ -144,7 +141,7 @@ export class GenerateMap {
     theEdge(data: Trypackage) {
         let newTrypackage: Trypackage = [];
         table.foreach(data, (_, v: { x: number, y: number; }) => {
-                for(let i = 1 ; i < 10 ; i++)
+                for(let i = 1 ; i < 9 ; i++)
                 {
                     if(i != 5)
                     {
@@ -155,8 +152,9 @@ export class GenerateMap {
                     }
                 }
         });
-        print("newtrypack" + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print(newTrypackage.length + "length")
+        table.foreach(newTrypackage,(_,v:{x?: number;y?: number;})=>{
+                DebugDrawCircle(Vector(v.x * 2048 ,v.y * 2048,100),RandomVector(255),20,100,false,999999)
+        })
         return newTrypackage
     }
 
@@ -174,28 +172,28 @@ export class GenerateMap {
     direction(dir: number) {
         switch (dir) {
             case 1:
-                return function (data: { x: number, y: number; }) { return { x: data.x - 1, y: data.y - 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x - 2, y: data.y - 2 }; };
                 break;
             case 2:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y - 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y - 2 }; };
                 break;
             case 3:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 1, y: data.y - 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 2, y: data.y - 2 }; };
                 break;
             case 4:
-                return function (data: { x: number, y: number; }) { return { x: data.x - 1, y: data.y - 0 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x - 2, y: data.y - 0 }; };
                 break;
             case 6:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 1, y: data.y + 0 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 2, y: data.y + 0 }; };
                 break;
             case 7:
-                return function (data: { x: number, y: number; }) { return { x: data.x - 1, y: data.y + 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x - 2, y: data.y + 2 }; };
                 break;
             case 8:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y + 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y + 2 }; };
                 break;
             case 9:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 1, y: data.y + 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 2, y: data.y + 2 }; };
                 break;
         }
     }
