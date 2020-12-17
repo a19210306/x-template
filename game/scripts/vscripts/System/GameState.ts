@@ -1,4 +1,5 @@
-import { RegisterIoc } from "./IOCotainer";
+import { reloadable } from "../lib/tstl-utils";
+import { IocCotainer, RegisterIoc } from "./IOCotainer";
 
 export class GameStateData {
 
@@ -21,41 +22,12 @@ interface GameStatePackage {
     Run:()=>boolean
 }
 
-
-@RegisterIoc("Scence",[])
-export class Scenes {
-    private _GameStatePackage: GameStatePackage;
-    private _time:number
-
-    constructor(GameStatePackage: GameStatePackage) {
-        this._GameStatePackage = GameStatePackage;
-        Timers.CreateTimer(()=>{this.ScenesRun()});
-        this._time = 0
-    }
-
-    public set ChangeState(GameStatePackage: GameStatePackage){
-        this._GameStatePackage = GameStatePackage
-        this._GameStatePackage.Begin()
-    }
-
-    ScenesRun() {
-        if (GameRules.IsGamePaused()) {
-            return FrameTime();
-        }
-        this._time++
-        CustomNetTables.SetTableValue("game_timer", "game_timer", {
-            current_time: this._time,
-            current_state: this.ChangeState._StateName,
-        });
-        if (!this._GameStatePackage.Run()) {
-            this._GameStatePackage.End(); 
-        }
-        return 1;
-    }
+export function GetScence() {
+    IocCotainer.instance.register("GameEnd",["Scence"],GameEnd)
+    return IocCotainer.instance.resolve<Scenes>("Scence")
 }
 
-
-@RegisterIoc("AwaitStart",["Scence","initCharacter"])
+@RegisterIoc("AwaitStart",["Scenes","initCharacter"],true)
 export class AwaitStart implements GameStatePackage{
 
     _Context: Scenes;
@@ -63,11 +35,13 @@ export class AwaitStart implements GameStatePackage{
     _NextState: GameStatePackage
     _remaining:number
 
-    constructor(context:Scenes,time:number|-1 = -1,NextState:GameStatePackage){
-        this._Context = context
-        this._NextState = NextState
+    constructor(){
         this._StateName = StateName.null
-        this._remaining = time
+        print(" bei chuang zao")
+    }
+
+    public set Context(Scenes:Scenes){
+        this._Context = Scenes
     }
 
     Begin(){
@@ -75,6 +49,8 @@ export class AwaitStart implements GameStatePackage{
     }
  
     End(){
+        print("end end end")
+        DeepPrintTable(this._NextState)
         this._Context.ChangeState = this._NextState
     }
 
@@ -99,9 +75,19 @@ export class AwaitStart implements GameStatePackage{
         return allSpawned
     }
 
+    Inject(obj:Object){
+            print(obj.constructor.name + " constructor")
+            if(obj.constructor.name == 'Scenes'){
+                this._Context = obj as Scenes
+            }
+            if(obj.constructor.name == 'initCharacter'){
+                print("_NextState yi zhu ru")
+                this._NextState = obj as GameStatePackage
+            }
+    }
 }
 
-@RegisterIoc("initCharacter",["Scence","InitMap"])
+@RegisterIoc("initCharacter",["Scence"],true)
 export class initCharacter implements GameStatePackage{
 
     _Context: Scenes;
@@ -109,11 +95,10 @@ export class initCharacter implements GameStatePackage{
     _NextState: GameStatePackage;
     _remaining:number;
 
-    constructor(context:Scenes,time:number|-1,NextState:GameStatePackage){
-        this._Context = context
-        this._NextState = NextState
-        this._StateName = StateName.null
-        this._remaining = time
+    constructor(){
+        this._StateName = StateName.CharacterCreation
+        this._remaining = 120
+        print("initCharacter")
     }
 
     Begin(){
@@ -130,9 +115,19 @@ export class initCharacter implements GameStatePackage{
         return true
     }
 
+
+    Inject(obj:Object){
+        if(obj.constructor.name == 'Scenes'){
+            this._Context = obj as Scenes
+        }
+        if(obj.constructor.name == 'GameStatePackage'){
+            this._NextState = obj as GameStatePackage
+        }
+    }
+
 }
 
-@RegisterIoc("InitMap",["Scence","GameStart"])
+//@RegisterIoc("InitMap",["Scence","GameStart"])
 export class InitMap implements GameStatePackage{
     _Context: Scenes;
     _StateName: StateName;
@@ -142,6 +137,7 @@ export class InitMap implements GameStatePackage{
     constructor(context:Scenes,time:number|-1 = -1,NextState:GameStatePackage){
         this._Context = context
         this._StateName = StateName.MapCreation
+        print("InitMap = " + context)
     }
 
     Begin(){
@@ -159,7 +155,7 @@ export class InitMap implements GameStatePackage{
 
 }
 
-@RegisterIoc("GameStart",["Scence","GameEnd"])
+//@RegisterIoc("GameStart",["Scence","GameEnd"])
 export class GameStart implements GameStatePackage{
     _Context: Scenes;
     _StateName: StateName;
@@ -169,6 +165,7 @@ export class GameStart implements GameStatePackage{
     constructor(context:Scenes,time:number|-1 = -1,NextState:GameStatePackage){
         this._Context = context
         this._StateName = StateName.GameStart
+        print("GameStart = " + context)
     }
 
     Begin(){
@@ -186,7 +183,7 @@ export class GameStart implements GameStatePackage{
 
 }
 
-@RegisterIoc("GameEnd",["Scence"])
+//@RegisterIoc("GameEnd",["Scence"])
 export class GameEnd implements GameStatePackage{
     _Context: Scenes;
     _StateName: StateName;
@@ -197,6 +194,7 @@ export class GameEnd implements GameStatePackage{
         this._Context = context
         this._StateName = StateName.GameOver
         this._remaining = time
+        print("GameEnd = " + context)
     }
 
     Begin(){
@@ -212,4 +210,41 @@ export class GameEnd implements GameStatePackage{
         return true
     }
 
+    
+
+}
+
+@RegisterIoc("Scenes",["AwaitStart"],false)
+export class Scenes {
+    private _GameStatePackage: GameStatePackage;
+    private _time:number
+
+    constructor(GameStatePackage: GameStatePackage) {
+        this._GameStatePackage = GameStatePackage;
+        print("init=======================================")
+        Timers.CreateTimer(()=>{return this.ScenesRun()});
+        this._time = 0
+    }
+
+    public set ChangeState(GameStatePackage: GameStatePackage){
+        this._GameStatePackage = GameStatePackage
+        this._GameStatePackage.Begin()
+    }
+
+    ScenesRun() {
+        this._time++
+        CustomNetTables.SetTableValue("game_timer", "game_timer", {
+            current_time: this._time,
+            current_state: this._GameStatePackage._StateName,
+        });
+        print(this._time)
+        if (GameRules.IsGamePaused() || !this._GameStatePackage) {
+            print("1")
+            return FrameTime();
+        }
+        if (!this._GameStatePackage.Run()) {
+            this._GameStatePackage.End()
+        }
+        return 1;
+    }
 }

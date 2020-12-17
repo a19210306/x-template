@@ -3,7 +3,7 @@ import './lib/timers'
 import "./abilities/modifier/ship_move_speed"
 import './utils/table'
 import { __default_ground, __floorHeight } from './Land/Const';
-import { AwaitStart, initCharacter, Scenes } from './System/GameState';
+import { AwaitStart, GetScence, initCharacter, Scenes } from './System/GameState';
 import { IocCotainer } from "./System/IOCotainer";
 
 declare global {
@@ -18,7 +18,6 @@ declare global {
         AllTeams: table;
         IDHeroMap: table;
         TeamHeroMap: table;
-        Scenes:Scenes
     }
 }
 
@@ -35,9 +34,8 @@ export class GameMode {
         GameRules.AllPlayers = []
         GameRules.AllTeams = {}
         GameRules.IDHeroMap = {}
-        GameRules.Scenes = IocCotainer.instance.resolve<Scenes>("Scenes")
+        GameRules.TeamHeroMap = {}
     }
-
     constructor() {
         this.configure();
         ListenToGameEvent("game_rules_state_change", () => this.OnStateChange(), undefined);
@@ -53,6 +51,7 @@ export class GameMode {
         GameRules.SetShowcaseTime(0);
     }
 
+
     public OnStateChange(): void {
     }
 
@@ -62,6 +61,7 @@ export class GameMode {
 
     private OnNpcSpawned(event: NpcSpawnedEvent) {}
  
+
     test(){
 
     }
@@ -76,7 +76,6 @@ export class GameMode {
         GameRules.AllHeroes.push(hero);
     }
 }
-
 
 function huanzhuang(entiti:CDOTA_BaseNPC_Hero){
     let modelname = 'models/ship/sm_prop_shipwreck_01.vmdl';

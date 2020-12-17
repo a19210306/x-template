@@ -92,7 +92,7 @@ const Map = memo(()=>{
 export const MiniMap = () => {
     const {__register} = useContext(Context)
     const __gameuistate = useNetTableKey("ui",'alluiState')
-
+//
     useEffect(()=>{
     })
 
