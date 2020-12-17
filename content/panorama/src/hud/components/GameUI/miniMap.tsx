@@ -97,7 +97,7 @@ export const MiniMap = () => {
     })
 
     const fefresh = useCallback(() => {
-        if(__gameuistate && __gameuistate.switch == 'start')
+        if(__gameuistate && __gameuistate.switch == 'GameStart')
         {
             return ( 
                 <Panel className="main-minimap" ref={(panel)=>{__register!.current!({_active:ui_state.开启,_type:'addUilist',_operation_panel:ui_list.大地图,_Panel:panel!})}}>
