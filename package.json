@@ -24,6 +24,8 @@
     },
     "dependencies": {
         "@types/raf": "^3.4.0",
+        "buffer": "^6.0.3",
+        "hyperid": "^2.1.0",
         "mation": "0.0.2",
         "raf": "^3.4.1"
     },

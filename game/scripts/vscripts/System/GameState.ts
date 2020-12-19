@@ -1,6 +1,8 @@
 import { reloadable } from "../lib/tstl-utils";
 import { IocCotainer, RegisterIoc } from "./IOCotainer";
 import { GenerateMap } from '../Land/2DGenerator';
+import { LandCollision } from '../Land/LandColisionList';
+import { climate, LandCotainerManager } from '../Land/LandCotainer';
 
 export class GameStateData {
 
@@ -197,10 +199,12 @@ export class GameStart implements GameStatePackage{
     _StateName: State2Name;
     _NextState: GameStatePackage;
     _remaining:number;
+    _LandData:Record<string,{widthindex:number,heightindex:number,angle:number}>
 
     constructor(context:Scenes,time:number|-1 = -1,NextState:GameStatePackage){
         this._Context = context
         this._StateName = State2Name.游戏开始
+        this._LandData = {}   
         print("GameStart = " + context)
     }
 
@@ -224,6 +228,14 @@ export class GameStart implements GameStatePackage{
         if(obj.constructor.name == 'GameEnd'){
             this._NextState = obj as GameStatePackage
         }
+    }
+
+    CreateMiniMap(){
+        Entities.FindAllByName("init_land").forEach((land)=>{
+            let vec = land.GetAbsOrigin()
+            this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles()}
+        })
+        CustomNetTables.SetTableValue('map','LandData',this._LandData)
     }
 
 }

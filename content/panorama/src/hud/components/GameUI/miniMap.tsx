@@ -4,7 +4,6 @@ import raf from 'raf';
 import { Context, ui_list, ui_state } from './Gcontext';
 
 
-
 const My_coor = memo(()=>{
     const {__ui_Manager,__register } = useContext(Context)
     const [__my_angles,__set_my_angles] = useState([0,0,0])
@@ -41,19 +40,13 @@ const Backgroud = memo(() => {
 })
 
 
-const Land = ()=>{
-    const [__land,__addland] = useState<{
-        widthindex?: number;
-        heightindex?: number;
-        angle?: number;
-        landName?: string;
-    }[]>([])
+const Land = () =>{
+    const [__land,__addland] = useState<Record<string,{widthindex:number,heightindex:number,angle:number}>>({})
 
     const land = useGameEvent('addLandMinimap',(an)=>{
-        __addland((__land) => {
-            $.Msg(__land)
-            return [...__land,an]
-        })
+        return <Image
+            key={}
+        />
     },[])
 
     return(

@@ -76,7 +76,6 @@ export class GenerateMap {
             table.foreach(tmp, (index, v: CreateLandNamePackage) => {
                 print(index + "index")
                 Timers.CreateTimer(index/2,()=>{
-                    print("init land")
                     DOTA_SpawnMapAtPosition("land/"+v.name, Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
                     IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
                     table.foreach(v.package, (k, v: { x?: number; y?: number; }) => {

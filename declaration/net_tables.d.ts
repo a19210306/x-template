@@ -17,7 +17,7 @@ declare interface CustomNetTableDeclarations {
         hero_list: Record<string, string> | string[];
     };
     map: {
-        date:{widthindex:number,heightindex:number,angle:number,landName:string}
+        LandData:Record<string,{widthindex:number,heightindex:number,angle:number}>
     };
     ui: {
         alluiState:{switch:"close"|"initCharacter"|"Initmap"|"GameStart"|"GameEnd"}
