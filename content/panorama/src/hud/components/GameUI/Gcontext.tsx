@@ -89,7 +89,7 @@ export const GContext = (props:ContextProps) => {
     const __persend_panel = useRef<Panel|undefined>(undefined)
     const __set_persend_panel = useRef((Panel?:Panel)=>{
         if(__mouse_state.current) return
-        __persend_panel.current = Panel//
+        __persend_panel.current = Panel
     })
     const __mouse_state = useRef(false)
     const __ui_static_store = useRef(initRecordPanel) 
@@ -104,7 +104,7 @@ export const GContext = (props:ContextProps) => {
     useEffect(()=>{
        if(__gameuistate && Object.keys(__ui_static_store.current).length != Object.keys(__ui_Manager).length)
        {
-          let obj:PanelRecord = JSON.parse(JSON.stringify(__ui_static_store.current))
+          let obj:PanelRecord = __ui_static_store.current
           let namelist = Object.keys(obj)
           namelist.forEach(value=>{
               __ui_sendmassage({_type:'addUilist',_operation_panel:value,_active:__ui_static_store.current[value]._PanelState,_Panel:__ui_static_store.current[value]._PanelInstance})

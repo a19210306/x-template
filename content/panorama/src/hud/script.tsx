@@ -5,7 +5,8 @@ import raf from 'raf';
 import {Context} from './components/GameUI/Gcontext'
 import {useRegisterPresentPanel} from './components/Use/RegisterPanel'
 import MiniMap from './components/GameUI/miniMap';
-
+import { InitCharacterMain } from './components/InitCharacter/InitCharacter';
+import { InitMap } from './components/InitMap/InitMap'
 
 const Anniu = () => {
     const {__ui_Manager,__ui_sendmassage} = useContext(Context)
@@ -27,11 +28,13 @@ const Anniu = () => {
    />
    </Panel>)
 }
-
+//  
 
 render(
 <>
 <GContext>
+<InitCharacterMain/>
+<InitMap/>
 <Anniu/>
 <MiniMap/>
 </GContext>

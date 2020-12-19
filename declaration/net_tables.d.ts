@@ -1,8 +1,16 @@
 declare interface CustomNetTableDeclarations {
-    game_timer: {
-        game_timer: {
+    Game_State: {
+        game_state: {
             current_time: number;
             current_state: number;
+            current_loacl_time?:number;
+        };
+        progress: {
+            current_name:string;
+            max_render_count:number;
+        }
+        current_render_count:{
+            count:number;
         };
     };
     hero_list: {

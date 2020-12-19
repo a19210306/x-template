@@ -3,7 +3,7 @@
     custom_net_tables = 
     [
         "hero_list",
-        "game_timer",
+        "Game_State",
         "map",
         "ui",
     ]

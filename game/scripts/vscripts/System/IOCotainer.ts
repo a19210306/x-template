@@ -41,7 +41,6 @@ export class IocCotainer{
             list.dependencies.forEach((dependens,index)=>{
                 if(dependens == introduction)
                 {
-                    print(`gei ${list.key} zhuru`)
                     this.resolve<any>(list.key).Inject(this.resolve<any>(introduction))
                     list.dependencies[index] = null
                 }

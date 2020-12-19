@@ -2,6 +2,8 @@ import { __LandbetweenDistance, __LandAngle, __LandCount, __LandPrefixName, __bo
 import { LandGenerator } from './Lands';
 import { reloadable } from '../lib/tstl-utils';
 import { LandCollision, Landtetris } from "./LandColisionList";
+import { IocCotainer } from '../System/IOCotainer';
+import { InitMap } from '../System/GameState';
 
 type Trypackage = { x?: number, y?: number; }[];
 type CreateLandNamePackage = { name: string, package: Trypackage, ABSorigin: Vector; };
@@ -52,7 +54,8 @@ export class GenerateMap {
 
     Generator() {
         let tmp: CreateLandNamePackage[] = [];
-        while(tmp.length < __LandCount) {
+        IocCotainer.instance.resolve<InitMap>("InitMap").SetProgress = {current_name:'创造陆地',current_render_count:0,max_render_count:300}
+        Timers.CreateTimer(()=>{
             let PresentCreateland = this.CreateLand();
             if (PresentCreateland) {
                 if (tmp.length == 0) {
@@ -66,31 +69,55 @@ export class GenerateMap {
                     }
                 });
             } 
-        }
+        
 
-        if (tmp) {
-            table.foreach(tmp, (_, v: CreateLandNamePackage) => {
-                DOTA_SpawnMapAtPosition("land/"+v.name, Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
-                table.foreach(v.package, (k, v: { x?: number; y?: number; }) => {
-                    this._map_data[v.x][v.y] = 1;
-                });
+        if (tmp.length == __LandCount) {
+            print(tmp.length + "tmp.length")
+            table.foreach(tmp, (index, v: CreateLandNamePackage) => {
+                print(index + "index")
+                Timers.CreateTimer(index/2,()=>{
+                    print("init land")
+                    DOTA_SpawnMapAtPosition("land/"+v.name, Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
+                    IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
+                    table.foreach(v.package, (k, v: { x?: number; y?: number; }) => {
+                        this._map_data[v.x][v.y] = 1;
+                    });
+                    if(index == tmp.length)
+                    {
+                        print("floorInstanceLand")
+                        this.floorInstanceLand()
+                    }
+                })
             });
+            return        
         }
-        this.floorInstanceLand();
+            return 0.15
+        })
+          
     }
 
     floorInstanceLand() {
+        let delay = 1
         for (let i = -this._size + 1; i < this._size; i++) {
             for (let j = -this._size + 1; j < this._size; j++) {
                 if (this._map_data[i][j] == 0) {
-                    DOTA_SpawnMapAtPosition("land/test", Vector(i * 2048, j * 2048, 0), false, () => { print("create nav"); }, () => { }, undefined);
-                    DebugDrawText(Vector(i * 2048, j * 2048, 0), i + "," + j.toString(), false, 999999);
+                    const $i = i
+                    const $j = j
+                    Timers.CreateTimer(delay += 0.15,()=>{
+                        print("cuurent i j = " + $i + "," + $j)
+                        DOTA_SpawnMapAtPosition("land/test", Vector($i * 2048, $j * 2048, 0), false, () => { print("create nav"); }, () => { }, undefined);
+                        IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
+                        if($i * $j == this._size-- * this._size--){
+                            IocCotainer.instance.resolve<InitMap>("InitMap").SetIsOver = true
+                        }
+                    })
                 }
             }
         }
     }
 
     CreateLand(): CreateLandNamePackage {
+        IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
         let x = RandomInt(-this._size, this._size);
         let y = RandomInt(-this._size, this._size);
         print("xy=" + x, y);

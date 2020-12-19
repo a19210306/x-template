@@ -3,7 +3,7 @@ import './lib/timers'
 import "./abilities/modifier/ship_move_speed"
 import './utils/table'
 import { __default_ground, __floorHeight } from './Land/Const';
-import { AwaitStart, GetScence, initCharacter, Scenes } from './System/GameState';
+import { AwaitStart, initCharacter, Scenes } from './System/GameState';
 import { IocCotainer } from "./System/IOCotainer";
 
 declare global {
