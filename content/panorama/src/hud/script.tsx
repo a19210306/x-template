@@ -46,4 +46,5 @@ render(
     GameUI.SetCameraDistance(2200)
     GameUI.SetCameraPitchMax(90)
     GameUI.SetCameraPitchMin(90)
+    GameUI.SetCameraYaw(450)
 })();

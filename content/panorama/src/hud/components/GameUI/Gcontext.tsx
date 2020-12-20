@@ -1,6 +1,7 @@
 import React , {useState,useCallback, createContext,useEffect,useContext ,useRef,useLayoutEffect, Children, useReducer, Dispatch} from "react";
 import raf from 'raf';
 import { useNetTableKey } from "react-panorama";
+import { climate } from '../../../../../../game/scripts/vscripts/Land/LandCotainer';
 
 
 type GContext = {
@@ -88,9 +89,11 @@ export const GContext = (props:ContextProps) => {
     
     const __persend_panel = useRef<Panel|undefined>(undefined)
     const __set_persend_panel = useRef((Panel?:Panel)=>{
-        if(__mouse_state.current) return
-        __persend_panel.current = Panel
+        if(!GameUI.IsMouseDown(0)){
+            __persend_panel.current = Panel
+        }
     })
+    const __mouse_down_point = useRef(GameUI.GetCursorPosition())
     const __mouse_state = useRef(false)
     const __ui_static_store = useRef(initRecordPanel) 
     
@@ -102,7 +105,7 @@ export const GContext = (props:ContextProps) => {
 
 
     useEffect(()=>{
-       if(__gameuistate && Object.keys(__ui_static_store.current).length != Object.keys(__ui_Manager).length)
+       if(__gameuistate.switch == 'GameStart' && Object.keys(__ui_static_store.current).length != Object.keys(__ui_Manager).length)
        {
           let obj:PanelRecord = __ui_static_store.current
           let namelist = Object.keys(obj)
@@ -120,11 +123,13 @@ export const GContext = (props:ContextProps) => {
             if(event == "pressed")
             {
                 __mouse_state.current = true
+                __mouse_down_point.current = GameUI.GetCursorPosition()
                 return false
             }
             else
             {
                 __mouse_state.current = false
+                __mouse_down_point.current = GameUI.GetCursorPosition()
                 return false
             }            
         })
@@ -134,14 +139,13 @@ export const GContext = (props:ContextProps) => {
         
         useLayoutEffect(()=>{
             raf(function tick(time){
-                if(__persend_panel != undefined && __mouse_state.current == true && GameUI.GetCursorPosition())
+                if(__persend_panel.current != undefined && GameUI.IsMouseDown(0) && GameUI.GetCursorPosition())
                 {
-                    __persend_panel.current!.style.marginLeft = `${GameUI.GetCursorPosition()[0]}px`;
-                    __persend_panel.current!.style.marginTop = `${GameUI.GetCursorPosition()[1]}px`;
+
                 }
                 raf(tick)
             })
-        })
+        },[__persend_panel.current])
 
         return <>
                </>
