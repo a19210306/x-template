@@ -1,6 +1,6 @@
 import React , {useState,useCallback, createContext,useEffect,useContext ,useRef,useLayoutEffect, Children, useReducer, Dispatch} from "react";
 import raf from 'raf';
-import { useNetTableKey } from "react-panorama";
+import { useNetTableKey, useNetTableValues } from 'react-panorama';
 import { climate } from '../../../../../../game/scripts/vscripts/Land/LandCotainer';
 
 
@@ -75,6 +75,7 @@ const UilistReducer:UilistReducer = (state:PanelRecord,action:Uiaction) => {
              state[name!]._PanelInstance!.visible = false
             return state
         case 'togglePanel':
+                if(!state[name!]) return state
                 state[name!]._PanelInstance!.visible = state[name!]._PanelInstance!.visible ? false : true
                 let visible_tag = state[name!]._PanelState =  state[name!]._PanelState == ui_state.隐藏 ? ui_state.开启 : ui_state.隐藏
                 let newtag = {[action._operation_panel!]:{_PanelState:visible_tag,_PanelInstance:state[action._operation_panel!]._PanelInstance}}
@@ -101,19 +102,19 @@ export const GContext = (props:ContextProps) => {
         __ui_static_store.current = UilistReducer(__ui_static_store.current,action)
     })
 
-    const __gameuistate = useNetTableKey("ui",'alluiState')
+    const __gameuistate = useNetTableValues("ui")
 
 
     useEffect(()=>{
-       if(__gameuistate.switch == 'GameStart' && Object.keys(__ui_static_store.current).length != Object.keys(__ui_Manager).length)
+       if(__gameuistate.alluiState && Object.keys(__ui_static_store.current).length != Object.keys(__ui_Manager).length)
        {
-          let obj:PanelRecord = __ui_static_store.current
-          let namelist = Object.keys(obj)
-          namelist.forEach(value=>{
-              __ui_sendmassage({_type:'addUilist',_operation_panel:value,_active:__ui_static_store.current[value]._PanelState,_Panel:__ui_static_store.current[value]._PanelInstance})
-          })
-       }
-    },[__gameuistate])
+            let obj:PanelRecord = __ui_static_store.current
+            let namelist = Object.keys(obj)
+            namelist.forEach(value=>{
+                __ui_sendmassage({_type:'addUilist',_operation_panel:value,_active:__ui_static_store.current[value]._PanelState,_Panel:__ui_static_store.current[value]._PanelInstance})
+            })
+       }//
+    },[__ui_static_store.current])
 
     
 

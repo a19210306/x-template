@@ -15,7 +15,7 @@ const My_coor = memo(() => {
         return {
             align: 'center center',
             preTransformRotate2d: __my_angles[1].toString() ? (__my_angles[1] + 450).toString() + "deg" : "0" + "deg",
-            position: `${__my_position.current[0] / 16}px ${__my_position.current[1] / 16}px 0px`
+            position: `${__my_position.current[0] / 16}px ${__my_position.current[1] / 16}px 0px`,
         };
     }, [__my_angles]);
 
@@ -33,7 +33,7 @@ const My_coor = memo(() => {
     return <Image
         src={'file://{images}/custom_game/test/minimap_icon_ship.png'}
         scaling="stretch-to-fit-y-preserve-aspect"
-        style={{ ...Coordinatemapping, width: '50px', height: '120px' }}
+        style={{ ...Coordinatemapping, width: '30px', height: '80px' }}
         ref={(panel) => __register?.current({ _Panel: panel!, _active: ui_state.跟随父级的子面板, _operation_panel: 'my-coor', _type: 'addUilist' })} className="my-coor" />;
 });
 
@@ -48,6 +48,7 @@ const Land = () => {
 
     const Mapdata = useCallback(() => {
         let list: JSX.Element[] = [];
+        $.Msg(__land)
         for (let i in __land.LandData) {
             list.push(<Image key={id().uuid} 
             src={`file://{images}/custom_game/minimap/land/${i}.png`}

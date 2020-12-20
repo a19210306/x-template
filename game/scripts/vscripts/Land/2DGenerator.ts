@@ -63,12 +63,15 @@ export class GenerateMap {
                 if (tmp.length == 0) {
                     tmp.push(PresentCreateland);
                     this.RemoveList(string.gsub(PresentCreateland.name,"deg%d*","")[0])
-                    print("pubsh!@3123213"+ PresentCreateland)
                 }
                 else{
                     table.foreach(tmp, (_, v: CreateLandNamePackage) => {
                         if(this.collisionDetection(v.package,this.theEdge(PresentCreateland.package))){
                             tmp.push(PresentCreateland)
+                            this.theEdge(PresentCreateland.package).forEach(list=>{
+                                print("list +1")
+                                DebugDrawCircle(Vector(list.x * 2048 ,list.y *2048,300),Vector(255,255,0),100,100,false,9999)
+                            })
                             this.RemoveList(string.gsub(PresentCreateland.name,"deg%d*","")[0])
                             return 'stop'
                         }
@@ -135,7 +138,8 @@ export class GenerateMap {
         if (this._map_data[x] && this._map_data[y]) {
             for (let $x = 0; $x < randomSelectLand.x ; $x++) {
                 for (let $y = 0; $y < randomSelectLand.y; $y++) {
-                    if (!this._map_data[x - $x + 1] || !this._map_data[x - $x + 1][y + $y - 1]) return undefined;
+                    if (!this._map_data[x - $x] || !this._map_data[x - $x][y + $y]) return undefined;
+                    if ( (x - $x) *2048 - 1024  < -15000 || (y + $y) *2048 + 1024 > 15000) return undefined
                     if ($x * $y == (randomSelectLand.x - 1 ) * (randomSelectLand.y -1)) {
                         tmp.push({ x: x - $x, y: y + $y });
                         CreateLandNamePackage = { name: randomSelectLand.name, package: tmp, ABSorigin: Vector(x, y, 0) };
@@ -187,9 +191,7 @@ export class GenerateMap {
                     if(i != 5)
                     {
                         let v2d = this.direction(i)(v)
-                        if(this.isOwnet(v2d,data)){
-                            newTrypackage.push(this.direction(i)(v))
-                        }
+                        newTrypackage.push(this.direction(i)(v))
                     }
                 }
         });
@@ -210,28 +212,28 @@ export class GenerateMap {
     direction(dir: number) {
         switch (dir) {
             case 1:
-                return function (data: { x: number, y: number; }) { return { x: data.x - 1, y: data.y - 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x - 2, y: data.y - 2 }; };
                 break;
             case 2:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y - 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y - 2 }; };
                 break;
             case 3:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 1, y: data.y - 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 2, y: data.y - 2 }; };
                 break;
             case 4:
-                return function (data: { x: number, y: number; }) { return { x: data.x - 1, y: data.y - 0 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x - 2, y: data.y - 0 }; };
                 break;
             case 6:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 1, y: data.y + 0 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 2, y: data.y + 0 }; };
                 break;
             case 7:
-                return function (data: { x: number, y: number; }) { return { x: data.x - 1, y: data.y + 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x - 2, y: data.y + 2 }; };
                 break;
             case 8:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y + 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 0, y: data.y + 2 }; };
                 break;
             case 9:
-                return function (data: { x: number, y: number; }) { return { x: data.x + 1, y: data.y + 1 }; };
+                return function (data: { x: number, y: number; }) { return { x: data.x + 2, y: data.y + 2 }; };
                 break;
         }
     }
