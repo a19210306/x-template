@@ -2,6 +2,7 @@ import React, { memo, useCallback, useContext, useEffect, useLayoutEffect, useMe
 import { render, useGameEvent, useNetTableKey, useNetTableValues } from 'react-panorama';
 import raf from 'raf';
 import { Context, ui_list, ui_state } from './Gcontext';
+import  * as id  from 'hyperid'
 
 
 const My_coor = memo(()=>{
@@ -41,51 +42,33 @@ const Backgroud = memo(() => {
 
 
 const Land = () =>{
-    const [__land,__addland] = useState<Record<string,{widthindex:number,heightindex:number,angle:number}>>({})
+ 
+    const __land = useNetTableValues('map')
 
-    const land = useGameEvent('addLandMinimap',(an)=>{
-        return <Image
-            key={}
-        />
-    },[])
+    const Mapdata = useCallback(()=>{
+        let list:JSX.Element[] = []
+        $.Msg(__land)
+        for(let i in __land){
+        }
 
-    return(
-        <>
-        {
-            __land?.map(list => <Image key={Math.random()} style={{
-            position:`${list.widthindex! /16 }px ${list.heightindex! /16}px 0px}`,
-            zIndex:2,
-            align:'center center',
-            preTransformRotate2d:list.angle! + "deg" 
-        }} src={"file://{images}/custom_game/minimap/land/" + list.landName + ".png"}> 
-        <Panel  style ={{
-                        zIndex:2,
-                        fontSize:'30px',
-                        color:'red',
-                        width:'50px',
-                        height:'50px',
-                        backgroundColor:'red',
-                        align:'center center'
-        }}/>
-        </Image>
-        )}
-        </>
-    )
+    },[__land])
+
+    return <>
+           {Mapdata()}
+           </>
 }
 
 const Map = memo(()=>{
     return <Panel className="map">
-           <Movie src="s2r://panorama/videos/ui/session2.webm" style={{width:'2000px',height:'2000px',zIndex:-2}} repeat={true}  autoplay="onload"  >
            <Land/>
            <My_coor/>
-           </Movie>
            </Panel>
 })
 
 export const MiniMap = () => {
     const {__register} = useContext(Context)
     const __gameuistate = useNetTableKey("ui",'alluiState')
-//
+
     useEffect(()=>{
     })
 

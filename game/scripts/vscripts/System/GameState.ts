@@ -1,4 +1,3 @@
-import { reloadable } from "../lib/tstl-utils";
 import { IocCotainer, RegisterIoc } from "./IOCotainer";
 import { GenerateMap } from '../Land/2DGenerator';
 import { LandCollision } from '../Land/LandColisionList';
@@ -97,7 +96,7 @@ export class initCharacter implements GameStatePackage{
 
     constructor(){
         this._StateName = State2Name.初始化角色
-        this._remaining = 10
+        this._remaining = 1
         print("initCharacter")
     }
 
@@ -209,6 +208,7 @@ export class GameStart implements GameStatePackage{
     }
 
     Begin(){
+        this.CreateMiniMap()
         CustomNetTables.SetTableValue('ui','alluiState',{switch:'GameStart'})
     }
  
@@ -232,8 +232,9 @@ export class GameStart implements GameStatePackage{
 
     CreateMiniMap(){
         Entities.FindAllByName("init_land").forEach((land)=>{
+            print('initasdsadsadsadasssdas='+land.GetChildren()[0].GetName())
             let vec = land.GetAbsOrigin()
-            this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles()}
+            this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles().y}
         })
         CustomNetTables.SetTableValue('map','LandData',this._LandData)
     }

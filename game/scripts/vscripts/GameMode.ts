@@ -63,7 +63,9 @@ export class GameMode {
  
 
     test(){
-
+       let a = string.find("land_234",`land_%d*`,)
+       let c ="land_234".substring(a[0]-1,a[1])
+       print(c)
     }
 
     dota_player_pick_hero(keys: DotaPlayerPickHeroEvent){

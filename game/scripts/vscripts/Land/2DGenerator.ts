@@ -19,6 +19,7 @@ export class GenerateMap {
     private _original: number;
     private _smooth: number;
     private _LandPrefixName: string;
+    private _Selected:string[]
 
 
     public constructor() {
@@ -26,6 +27,7 @@ export class GenerateMap {
         this._original = 32768;
         this._size = this._original / 2048 / 2;
         this._LandPrefixName = __LandPrefixName;
+        this._Selected = []
         this.InitMap2D();
         this.Generator();
     }
@@ -60,19 +62,22 @@ export class GenerateMap {
             if (PresentCreateland) {
                 if (tmp.length == 0) {
                     tmp.push(PresentCreateland);
+                    this.RemoveList(string.gsub(PresentCreateland.name,"deg%d*","")[0])
+                    print("pubsh!@3123213"+ PresentCreateland)
                 }
-                table.foreach(tmp, (_, v: CreateLandNamePackage) => {
-                    if(this.collisionDetection(v.package,this.theEdge(PresentCreateland.package))){
-                        tmp.push(PresentCreateland)
-                        return 'stop'
-                    }else{
-                    }
-                });
-            } 
+                else{
+                    table.foreach(tmp, (_, v: CreateLandNamePackage) => {
+                        if(this.collisionDetection(v.package,this.theEdge(PresentCreateland.package))){
+                            tmp.push(PresentCreateland)
+                            this.RemoveList(string.gsub(PresentCreateland.name,"deg%d*","")[0])
+                            return 'stop'
+                        }
+                    });
+                }
+            }
         
-
-        if (tmp.length == __LandCount) {
             print(tmp.length + "tmp.length")
+        if (tmp.length == __LandCount) {
             table.foreach(tmp, (index, v: CreateLandNamePackage) => {
                 print(index + "index")
                 Timers.CreateTimer(index/2,()=>{
@@ -91,22 +96,25 @@ export class GenerateMap {
             return        
         }
             return 0.15
-        })
-          
-    }
+    })
+}
 
+        
     floorInstanceLand() {
-        let delay = 1
+        let delay = 0
+        let count = 0
         for (let i = -this._size + 1; i < this._size; i++) {
             for (let j = -this._size + 1; j < this._size; j++) {
                 if (this._map_data[i][j] == 0) {
                     const $i = i
                     const $j = j
                     Timers.CreateTimer(delay += 0.15,()=>{
+                        count++
                         print("cuurent i j = " + $i + "," + $j)
                         DOTA_SpawnMapAtPosition("land/test", Vector($i * 2048, $j * 2048, 0), false, () => { print("create nav"); }, () => { }, undefined);
                         IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
-                        if($i * $j == this._size-- * this._size--){
+                        print("count="+count)
+                        if(count == ((this._size-2) * 2 * (this._size - 2) * 2 ) ){
                             IocCotainer.instance.resolve<InitMap>("InitMap").SetIsOver = true
                         }
                     })
@@ -127,16 +135,10 @@ export class GenerateMap {
         if (this._map_data[x] && this._map_data[y]) {
             for (let $x = 0; $x < randomSelectLand.x ; $x++) {
                 for (let $y = 0; $y < randomSelectLand.y; $y++) {
-                    if (!this._map_data[x - $x] || !this._map_data[x - $x][y + $y]) return undefined;
+                    if (!this._map_data[x - $x + 1] || !this._map_data[x - $x + 1][y + $y - 1]) return undefined;
                     if ($x * $y == (randomSelectLand.x - 1 ) * (randomSelectLand.y -1)) {
                         tmp.push({ x: x - $x, y: y + $y });
                         CreateLandNamePackage = { name: randomSelectLand.name, package: tmp, ABSorigin: Vector(x, y, 0) };
-                        table.foreach(LandList,(k,v)=>{
-                            if (string.find(randomSelectLand.name,v.name).length != 0 )
-                            {
-                                LandList[k] = null;
-                            }
-                        })
                         return CreateLandNamePackage;
                     }
                     if (this._map_data[x - $x][y + $y] == 0) {
@@ -150,6 +152,14 @@ export class GenerateMap {
         } else { return undefined; }
     }
 
+    RemoveList(str:string){
+        table.foreach(LandList,(k,v)=>{
+            if(string.find(v.name,str).length > 0){
+                print(k+"bei shan chu")
+                LandList[k] = null
+            }
+        })
+    }
 
     PrintMap2D() {
         print(this._map_data);

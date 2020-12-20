@@ -121,7 +121,7 @@ export const LandCollision:Record<string,Collisions> =
 export const Landtetris = [
     {name:"land_1_deg0",x:3,y:3},
     {name:"land_1_deg60",x:4,y:4},
-    {name:"land_2_deg120",x:4,y:4},
+    {name:"land_1_deg120",x:4,y:4},
     {name:"land_1_deg180",x:3,y:4},
     {name:"land_1_deg240",x:4,y:4},
     {name:"land_1_deg300",x:4,y:4},
