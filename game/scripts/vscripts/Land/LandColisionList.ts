@@ -119,7 +119,12 @@ export const LandCollision:Record<string,Collisions> =
 }
 
 export const IslandTetris = [
-    {name:"island_5",x:1,y:2}
+    {name:"island_5_deg25",x:2,y:1},
+    {name:"island_5_deg311",x:1,y:2},
+    {name:"island_6_deg180",x:2,y:2},
+    {name:"island_6_deg0",x:2,y:2},
+    {name:"island_7_deg180",x:2,y:2},
+    {name:"island_7_deg0",x:2,y:2}
 ]
 
 export const Landtetris = [

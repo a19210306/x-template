@@ -160,7 +160,6 @@ export class GenerateMap {
                 for (let $y = 0; $y < randomSelectLand.y; $y++) {
                     if (!this._map_data[x - $x] || !this._map_data[x - $x][y + $y]) return undefined;
                     if (this._map_data[x - $x][y + $y] != 0) return undefined;
-                    if ( (x - $x) * 2048 - 1024  < -15500 || (y + $y) *2048 + 1024 > 15500) return undefined
                     print("x + y = " + $x + $y)
                     print( $x == randomSelectLand.x - 1 && $y == randomSelectLand.y - 1)
                     if ($x == randomSelectLand.x - 1 && $y == randomSelectLand.y - 1) {
