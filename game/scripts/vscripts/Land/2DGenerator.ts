@@ -1,7 +1,7 @@
-import { __LandbetweenDistance, __LandAngle, __LandCount, __LandPrefixName, __border, __land_beetween_distance } from './Const';
+import { __LandbetweenDistance, __LandAngle, __LandCount, __LandPrefixName, __border, __land_beetween_distance, __is_Land_count } from './Const';
 import { LandGenerator } from './Lands';
 import { reloadable } from '../lib/tstl-utils';
-import { LandCollision, Landtetris } from "./LandColisionList";
+import { IslandTetris, LandCollision, Landtetris } from "./LandColisionList";
 import { IocCotainer } from '../System/IOCotainer';
 import { InitMap } from '../System/GameState';
 
@@ -54,41 +54,59 @@ export class GenerateMap {
         }
     }
 
-    Generator() {
+     Generator() {
         let tmp: CreateLandNamePackage[] = [];
+        let islandend = false;
         IocCotainer.instance.resolve<InitMap>("InitMap").SetProgress = {current_name:'创造陆地',current_render_count:0,max_render_count:300}
         Timers.CreateTimer(()=>{
-            let PresentCreateland = this.CreateLand();
-            if (PresentCreateland) {
+            let PresentCreateland = LandList.length > 0 && this.CreateLand(true);
+            if (PresentCreateland && tmp.length < __LandCount) {
                 if (tmp.length == 0) {
                     tmp.push(PresentCreateland);
+                    table.foreach(PresentCreateland.package, (k, v: { x?: number; y?: number; }) => {
+                        this._map_data[v.x][v.y] = 1;
+                    });
                     this.RemoveList(string.gsub(PresentCreateland.name,"deg%d*","")[0])
                 }
                 else{
                     table.foreach(tmp, (_, v: CreateLandNamePackage) => {
-                        if(this.collisionDetection(v.package,this.theEdge(PresentCreateland.package))){
+                        if(this.collisionDetection(v.package,PresentCreateland.package)){
                             tmp.push(PresentCreateland)
-                            this.theEdge(PresentCreateland.package).forEach(list=>{
-                                print("list +1")
-                                DebugDrawCircle(Vector(list.x * 2048 ,list.y *2048,300),Vector(255,255,0),100,100,false,9999)
-                            })
+                            table.foreach(PresentCreateland.package, (k, v: { x?: number; y?: number; }) => {
+                                this._map_data[v.x][v.y] = 1;
+                            });
                             this.RemoveList(string.gsub(PresentCreateland.name,"deg%d*","")[0])
                             return 'stop'
                         }
                     });
                 }
             }
+
+        print("llllllllength" + tmp.length)
+        if (tmp.length >= __LandCount && tmp.length <  __LandCount +__is_Land_count){
+            print("island")
+            let PresentCreateland = this.CreateLand(false);
+            if (PresentCreateland) {
+                    table.foreach(tmp, (_, v: CreateLandNamePackage) => {
+                        if(this.collisionDetection(v.package,PresentCreateland.package)){
+                            tmp.push(PresentCreateland)
+                            table.foreach(PresentCreateland.package, (k, v: { x?: number; y?: number; }) => {
+                                this._map_data[v.x][v.y] = 1;
+                            });
+                          //  this.RemoveList(string.gsub(PresentCreateland.name,"deg%d*","")[0])
+                            return 'stop'
+                        }
+                    })
+                    
+            }}
         
-            print(tmp.length + "tmp.length")
-        if (tmp.length == __LandCount) {
+        if (tmp.length >= __LandCount +__is_Land_count) {
             table.foreach(tmp, (index, v: CreateLandNamePackage) => {
                 print(index + "index")
-                Timers.CreateTimer(index/2,()=>{
-                    DOTA_SpawnMapAtPosition("land/"+v.name, Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
+                Timers.CreateTimer(index/3,()=>{
+                    print(v.name)
+                    DOTA_SpawnMapAtPosition(string.find(v.name,"is").length > 0 ? "island/" + v.name : "land/" + v.name, Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
                     IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
-                    table.foreach(v.package, (k, v: { x?: number; y?: number; }) => {
-                        this._map_data[v.x][v.y] = 1;
-                    });
                     if(index == tmp.length)
                     {
                         print("floorInstanceLand")
@@ -98,7 +116,7 @@ export class GenerateMap {
             });
             return        
         }
-            return 0.15
+            return 0.03
     })
 }
 
@@ -106,18 +124,19 @@ export class GenerateMap {
     floorInstanceLand() {
         let delay = 0
         let count = 0
+        print("floor!@@#@!#@!#")
         for (let i = -this._size + 1; i < this._size; i++) {
             for (let j = -this._size + 1; j < this._size; j++) {
+                const $count = count++
                 if (this._map_data[i][j] == 0) {
                     const $i = i
                     const $j = j
-                    Timers.CreateTimer(delay += 0.15,()=>{
-                        count++
+                    Timers.CreateTimer(delay += 0.03,()=>{
                         print("cuurent i j = " + $i + "," + $j)
                         DOTA_SpawnMapAtPosition("land/test", Vector($i * 2048, $j * 2048, 0), false, () => { print("create nav"); }, () => { }, undefined);
                         IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
                         print("count="+count)
-                        if(count == ((this._size-2) * 2 * (this._size - 2) * 2 ) ){
+                        if(count >= ((this._size-2) * 2 * (this._size - 2) * 2 ) ){
                             IocCotainer.instance.resolve<InitMap>("InitMap").SetIsOver = true
                         }
                     })
@@ -125,30 +144,33 @@ export class GenerateMap {
             }
         }
     }
-
-    CreateLand(): CreateLandNamePackage {
+//
+    CreateLand(islandorland:boolean): CreateLandNamePackage {
+        print("~~~~~~~~~~~~~~~~~~23123"+islandorland)
         IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
         let x = RandomInt(-this._size, this._size);
         let y = RandomInt(-this._size, this._size);
         print("xy=" + x, y);
-        let randomSelectLand = table.random(LandList);
+        let randomSelectLand = table.random(islandorland? LandList : IslandTetris);
         print("select=" + `x =${randomSelectLand.x}  y=${randomSelectLand.y}`);
         let tmp: Trypackage = [];
         let CreateLandNamePackage: CreateLandNamePackage = undefined;
-        if (this._map_data[x] && this._map_data[y]) {
+        if (this._map_data[x] && this._map_data[x][y]) {
             for (let $x = 0; $x < randomSelectLand.x ; $x++) {
                 for (let $y = 0; $y < randomSelectLand.y; $y++) {
                     if (!this._map_data[x - $x] || !this._map_data[x - $x][y + $y]) return undefined;
-                    if ( (x - $x) *2048 - 1024  < -15000 || (y + $y) *2048 + 1024 > 15000) return undefined
-                    if ($x * $y == (randomSelectLand.x - 1 ) * (randomSelectLand.y -1)) {
+                    if (this._map_data[x - $x][y + $y] != 0) return undefined;
+                    if ( (x - $x) * 2048 - 1024  < -15500 || (y + $y) *2048 + 1024 > 15500) return undefined
+                    print("x + y = " + $x + $y)
+                    print( $x == randomSelectLand.x - 1 && $y == randomSelectLand.y - 1)
+                    if ($x == randomSelectLand.x - 1 && $y == randomSelectLand.y - 1) {
                         tmp.push({ x: x - $x, y: y + $y });
-                        CreateLandNamePackage = { name: randomSelectLand.name, package: tmp, ABSorigin: Vector(x, y, 0) };
-                        return CreateLandNamePackage;
+                        CreateLandNamePackage = { name: randomSelectLand.name, package: tmp, ABSorigin: Vector(x, y, 0) }
+                        return CreateLandNamePackage
                     }
                     if (this._map_data[x - $x][y + $y] == 0) {
                         tmp.push({ x: x - $x, y: y + $y });
-                    }
-                    else {
+                    }else {
                         return undefined;
                     }
                 }

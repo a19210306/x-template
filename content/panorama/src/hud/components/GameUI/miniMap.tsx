@@ -71,7 +71,7 @@ const Map = memo(() => {
 
 
     return <Panel className="map">
-        <Panel style={{backgroundColor:'blue',width:'2048px',height:'2048px',backgroundImage:"url('file://{images}/custom_game/test/timg_copy.png')"}}>
+        <Panel style={{backgroundColor:'blue',width:'2048px',height:'2048px'}}>
         <Land />
         <My_coor />
         </Panel>

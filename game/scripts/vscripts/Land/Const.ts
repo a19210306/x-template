@@ -8,3 +8,4 @@ export const __size = 32768
 export const __reality =  16384
 export const __default_ground = 0
 export const __land_beetween_distance = 6000
+export const __is_Land_count = 20
