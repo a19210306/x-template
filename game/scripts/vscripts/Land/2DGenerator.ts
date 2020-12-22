@@ -1,7 +1,6 @@
 import { __LandbetweenDistance, __LandAngle, __LandCount, __LandPrefixName, __border, __land_beetween_distance, __is_Land_count } from './Const';
-import { LandGenerator } from './Lands';
 import { reloadable } from '../lib/tstl-utils';
-import { IslandTetris, LandCollision, Landtetris } from "./LandColisionList";
+import { IslandTetris, Landtetris } from "./LandColisionList";
 import { IocCotainer } from '../System/IOCotainer';
 import { InitMap } from '../System/GameState';
 

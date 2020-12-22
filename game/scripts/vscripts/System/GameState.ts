@@ -1,6 +1,5 @@
 import { IocCotainer, RegisterIoc } from "./IOCotainer";
 import { GenerateMap } from '../Land/2DGenerator';
-import { LandCollision } from '../Land/LandColisionList';
 import { climate, LandCotainerManager } from '../Land/LandCotainer';
 
 export class GameStateData {
