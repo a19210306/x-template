@@ -231,9 +231,10 @@ export class GameStart implements GameStatePackage{
 
     CreateMiniMap(){
         Entities.FindAllByName("init_land").forEach((land)=>{
-            print('initasdsadsadsadasssdas='+land.GetChildren()[0].GetName())
-            let vec = land.GetAbsOrigin()
-            this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles().y}
+            let vec = land.GetAbsOrigin();
+            print("sadasd"+land.GetName());
+            (land as CBaseModelEntity).SetSkin(RandomInt(0,3));
+            // this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles().y}
         })
         CustomNetTables.SetTableValue('map','LandData',this._LandData)
     }

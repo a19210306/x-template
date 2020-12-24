@@ -11,7 +11,13 @@ export const IslandTetris = [
     {name:"island_7_deg180",x:2,y:2},
     {name:"island_7_deg0",x:2,y:2},
     {name:"island_8_deg131",x:2,y:1},
-    {name:"island_8_deg43",x:1,y:2}
+    {name:"island_8_deg43",x:1,y:2},
+    {name:"island_9_deg0",x:2,y:2},
+    {name:"island_9_deg180",x:2,y:2},
+    {name:"island_10_deg42",x:2,y:1},
+    {name:"island_10_deg243",x:2,y:1},
+    {name:"island_11_deg147",x:2,y:2},
+    {name:"island_11_deg242",x:2,y:2},
 ]
 
 export const Landtetris = [

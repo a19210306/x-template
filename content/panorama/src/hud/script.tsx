@@ -34,12 +34,12 @@ render(
 <>
 <GContext>
 <InitCharacterMain/>
-<InitMap/>
+
 <Anniu/>
 <MiniMap/>
 </GContext>
 </>, $.GetContextPanel()); // 默认在中间渲染的红色REACT-PANORAMA标志，从这里开始修改为你自己喜欢的
-
+//
 (() => {
     // GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false); // 你也可以按你之前喜欢的方式写代码
     // GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
@@ -47,4 +47,5 @@ render(
     GameUI.SetCameraPitchMax(90)
     GameUI.SetCameraPitchMin(90)
     GameUI.SetCameraYaw(450)
+    $.GetContextPanel().GetParent()!.GetParent()!.GetParent()!.visible = false;
 })();

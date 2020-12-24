@@ -46,6 +46,11 @@ const Land = () => {
 
     const __land = useNetTableValues('map');
 
+    useEffect(()=>{
+        $.Msg("asdasd")
+        $.Msg(__land)
+    })
+
     const Mapdata = useCallback(() => {
         let list: JSX.Element[] = [];
         $.Msg(__land)

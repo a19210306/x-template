@@ -14,19 +14,19 @@ Layer0
 	F_SPECULAR 1
 
 	//---- Color ----
-	g_vColorTint "[0.654902 0.929412 1.000000 0.000000]"
-	g_vTexCoordOffset "[0.000 0.711]"
+	g_vColorTint "[0.423529 0.631373 0.686275 0.000000]"
+	g_vTexCoordOffset "[-0.043 0.871]"
 	g_vTexCoordScale "[0.500 0.500]"
 	TextureColor "materials/water_texture/preview.jpg"
 
 	//---- Normal Map ----
-	g_flBumpStrength "2.857"
+	g_flBumpStrength "0.299"
 	TextureNormal "materials/water_texture/4039-normal.jpg"
 
 	//---- Scroll UV ----
 	g_flScrollUvSpeed "1.071"
 	g_vScrollUvDirection "[1.579 1.000]"
-	TextureScrollSpeed "[0.483000 0.483000 0.483000 0.000000]"
+	TextureScrollSpeed "[0.644000 0.644000 0.644000 0.000000]"
 
 	//---- Self Illum ----
 	TextureSelfIllumMask "materials/default/default_selfillum.tga"

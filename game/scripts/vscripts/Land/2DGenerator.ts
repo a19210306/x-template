@@ -58,7 +58,7 @@ export class GenerateMap {
         let islandend = false;
         IocCotainer.instance.resolve<InitMap>("InitMap").SetProgress = {current_name:'创造陆地',current_render_count:0,max_render_count:300}
         Timers.CreateTimer(()=>{
-            let PresentCreateland = LandList.length > 0 && this.CreateLand(true);
+            let PresentCreateland = LandList.length == 0 ? undefined : this.CreateLand(true)
             if (PresentCreateland && tmp.length < __LandCount) {
                 if (tmp.length == 0) {
                     tmp.push(PresentCreateland);
@@ -80,7 +80,7 @@ export class GenerateMap {
                     });
                 }
             }
-
+        print(LandList.length)
         print("llllllllength" + tmp.length)
         if (tmp.length >= __LandCount && tmp.length <  __LandCount +__is_Land_count){
             print("island")

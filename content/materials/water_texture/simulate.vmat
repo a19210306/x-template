@@ -9,29 +9,29 @@ Layer0
 	F_USE_FOG_COLOR 1
 
 	//---- Color ----
-	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScale "[2.621 1.931]"
 
 	//---- Flow ----
 	g_flFlowTimeScale "0.221"
 
 	//---- Flow Normals ----
 	g_flNormalUvScale "1000.000"
-	g_flWorldPositionScale "1.912"
+	g_flWorldPositionScale "1.642"
 	TextureFlow "materials/water_texture/13843.jpg"
 
 	//---- Low End ----
-	g_flLowEndBaseBloom "0.882"
-	g_flLowEndBloomPower "6.866"
-	g_flLowEndReflectionPower "1.000"
-	g_flLowEndSurfaceFactor "0.300"
-	g_flLowEndSurfaceMinimumColor "0.200"
-	g_flLowEndSurfaceOpacity "0.500"
-	g_vLowEndReflectionColor "[0.000000 0.764706 1.000000 0.000000]"
-	g_vLowEndReflectionDir "[0.050 0.179 1.000]"
+	g_flLowEndBaseBloom "0.158"
+	g_flLowEndBloomPower "2.660"
+	g_flLowEndReflectionPower "3.738"
+	g_flLowEndSurfaceFactor "0.053"
+	g_flLowEndSurfaceMinimumColor "0.329"
+	g_flLowEndSurfaceOpacity "0.809"
+	g_vLowEndReflectionColor "[0.611765 0.909804 1.000000 0.000000]"
+	g_vLowEndReflectionDir "[-0.636 0.179 1.000]"
 	g_vLowEndSurfaceColor "[0.733333 1.000000 0.890196 0.000000]"
 
 	//---- Normal Map ----
-	g_flBumpStrength "0.368"
+	g_flBumpStrength "3.731"
 	g_flScroll1X "0.059"
 	g_flScroll1Y "0.147"
 	g_flScroll2X "0.191"
@@ -39,21 +39,21 @@ Layer0
 	TextureNormal "materials/water_texture/4039-normal.jpg"
 
 	//---- Reflections ----
-	g_flReflectance "0.880"
-	g_flReflectionAmount "1.000"
+	g_flReflectance "0.011"
+	g_flReflectionAmount "0.128"
 	g_vReflectionTint "[0.988235 1.000000 0.788235 0.000000]"
 
 	//---- Refractions ----
-	g_flRefractionAmount "0.338"
-	g_flWaterDepth "70.000"
-	g_flWaterFogShadowFactor "0.838"
+	g_flRefractionAmount "0.106"
+	g_flWaterDepth "191.489"
+	g_flWaterFogShadowFactor "0.074"
 	g_vRefractionTint "[0.933333 1.000000 0.980392 0.000000]"
 	g_vWaterFogColor "[0.988235 0.941177 1.000000 0.000000]"
 
 	//---- Specular ----
-	g_flBaseBloom "0.272"
-	g_flBloomPower "3.897"
-	g_flReflectionPower "0.598"
-	g_vReflectionColor "[1.000000 0.988235 0.870588 0.000000]"
-	g_vReflectionDir "[-0.179 -0.393 0.576]"
+	g_flBaseBloom "0.031"
+	g_flBloomPower "10.000"
+	g_flReflectionPower "0.754"
+	g_vReflectionColor "[0.400000 0.388235 0.329412 0.000000]"
+	g_vReflectionDir "[-1.000 -0.524 1.000]"
 }

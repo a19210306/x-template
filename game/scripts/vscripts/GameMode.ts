@@ -5,6 +5,11 @@ import './utils/table'
 import { __default_ground, __floorHeight } from './Land/Const';
 import { AwaitStart, initCharacter, Scenes } from './System/GameState';
 import { IocCotainer } from "./System/IOCotainer";
+import { Stack } from "./utils/Stack";
+import { Linkedlist } from "./utils/linkedlist";
+import { Graphs } from "./utils/Graph";
+
+
 
 declare global {
     interface table {
@@ -63,9 +68,12 @@ export class GameMode {
  
 
     test(){
-       let a = string.find("land_234",`land_%d*`,)
-       let c ="land_234".substring(a[0]-1,a[1])
-       print(c)
+       let bbb = new Graphs<number>()
+       bbb.AddNode(123,"map1")
+       bbb.AddNode(3949,"hahah")
+       print(bbb.Count)
+       bbb.AddEdge("map1","hahah")
+       
     }
 
     dota_player_pick_hero(keys: DotaPlayerPickHeroEvent){
@@ -90,7 +98,7 @@ function huanzhuang(entiti:CDOTA_BaseNPC_Hero){
     }
     entiti.SetModel(modelname);
     entiti.SetOriginalModel(modelname);
-    entiti.SetModelScale(3)
+    entiti.SetModelScale(4)
 }
 
 

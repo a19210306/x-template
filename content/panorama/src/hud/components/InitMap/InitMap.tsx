@@ -14,7 +14,6 @@ export const State = () => {
 
 export const Progress = () => {
     const __state = useNetTableValues('Game_State')
-
     return(
     <> 
     <Label text={`当前加载阶段:${__state.progress.current_name}`} style={{fontSize:'50px',align:'center center',marginTop:'250px'}}/>
