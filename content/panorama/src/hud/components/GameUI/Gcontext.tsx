@@ -1,7 +1,6 @@
 import React , {useState,useCallback, createContext,useEffect,useContext ,useRef,useLayoutEffect, Children, useReducer, Dispatch} from "react";
 import raf from 'raf';
 import { useNetTableKey, useNetTableValues } from 'react-panorama';
-import { climate } from '../../../../../../game/scripts/vscripts/Land/LandCotainer';
 
 
 type GContext = {

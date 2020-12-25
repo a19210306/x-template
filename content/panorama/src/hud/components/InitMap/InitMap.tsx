@@ -26,16 +26,21 @@ export const Progress = () => {
 export const InitMap = () => {
     const __state = useNetTableValues('Game_State')
 
-    if(__state.game_state.current_state === 2)
-    {
-        return <Panel style={{width:'100%',height:'100%',backgroundColor:"yellow"}}> 
-               <State/>
-               <Progress/>
-               {__state.game_state.current_time === -1 && <Time/>} 
-               </Panel>
-    }
+    const Export =  useMemo(() => {
+        $.Msg(__state)
+        if(__state.game_state.current_state === 2)
+        {
+            return <Panel style={{width:'100%',height:'100%',backgroundColor:"yellow"}}> 
+                   <State/>
+                   <Progress/>
+                   {__state.game_state.current_time === -1 && <Time/>} 
+                   </Panel>
+        }else{
+            return <></>
+        }
+    },[__state])
 
-    return <></>
+    return Export
 }
 
 

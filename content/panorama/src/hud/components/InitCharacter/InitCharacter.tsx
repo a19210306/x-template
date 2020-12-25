@@ -17,15 +17,19 @@ export const State = () => {
 export const InitCharacterMain = () => {
     const __state = useNetTableValues('Game_State')
 
-    if(__state.game_state.current_state < 2)
-    {
-        return <Panel style={{width:'100%',height:'100%',backgroundColor:"blue"}}> 
-               <State/>
-               <Time/> 
-               </Panel>
-    }
-    return <></>
+    const Export = useMemo(()=>{
+        if(__state.game_state.current_state < 2)
+        {
+            return <Panel style={{width:'100%',height:'100%',backgroundColor:"blue"}}> 
+                   <State/>
+                   <Time/> 
+                   </Panel>
+        }else{
+            return <></>
+        }
+    },[__state])
 
+    return Export
 }
 
 

@@ -126,7 +126,6 @@ export class GenerateMap {
         print("floor!@@#@!#@!#")
         for (let i = -this._size + 1; i < this._size; i++) {
             for (let j = -this._size + 1; j < this._size; j++) {
-                const $count = count++
                 if (this._map_data[i][j] == 0) {
                     const $i = i
                     const $j = j
@@ -135,7 +134,8 @@ export class GenerateMap {
                         DOTA_SpawnMapAtPosition("land/test", Vector($i * 2048, $j * 2048, 0), false, () => { print("create nav"); }, () => { }, undefined);
                         IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()
                         print("count="+count)
-                        if(count >= ((this._size-2) * 2 * (this._size - 2) * 2 ) ){
+                        count++
+                        if(count >= ((this._size-2)  * (this._size - 2) ) ){
                             IocCotainer.instance.resolve<InitMap>("InitMap").SetIsOver = true
                         }
                     })

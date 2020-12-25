@@ -1,5 +1,6 @@
 import { IocCotainer, RegisterIoc } from "./IOCotainer";
 import { GenerateMap } from '../Land/2DGenerator';
+import { climate_vector } from "./Enum";
 
 export class GameStateData {
 
@@ -158,6 +159,7 @@ export class InitMap implements GameStatePackage {
     }
 
     set SetIsOver(isover: boolean) {
+        print("IsOVER")
         this._IsOver = isover;
     }
 
@@ -206,6 +208,7 @@ export class GameStart implements GameStatePackage {
     }
 
     Begin() {
+        print("game start")
         this.CreateMiniMap();
         CustomNetTables.SetTableValue('ui', 'alluiState', { switch: 'GameStart' });
     }
@@ -231,9 +234,12 @@ export class GameStart implements GameStatePackage {
     CreateMiniMap() {
         Entities.FindAllByName("init_land").forEach((land) => {
             let vec = land.GetAbsOrigin();
-            print("sadasd" + land.GetName());
             (land as CBaseModelEntity).SetSkin(RandomInt(0, 3));
-            print(ExponentialDecay(10,20,30)+"sadsadsadasdsad")
+            let season_value = (climate_vector.寒带起始坐标 as Vector).__sub(vec).Length2D() / 463
+            DebugDrawText(Vector(vec.x,vec.y,200),"当前值"+season_value,false,989888)
+            DebugDrawCircle(Vector(vec.x,vec.y,200),Vector(255,255,255),100,100,false,99999)
+            print("~~~~~~~~~~~~~~~~~vec")
+            print(Vector(-16384,16384,0).__sub(Vector(16384,-16384,0)).Length2D())
             // this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles().y}
         });
         CustomNetTables.SetTableValue('map', 'LandData', this._LandData);

@@ -34,7 +34,7 @@ render(
 <>
 <GContext>
 <InitCharacterMain/>
-
+<InitMap/>
 <Anniu/>
 <MiniMap/>
 </GContext>
@@ -47,5 +47,5 @@ render(
     GameUI.SetCameraPitchMax(90)
     GameUI.SetCameraPitchMin(90)
     GameUI.SetCameraYaw(450)
-    $.GetContextPanel().GetParent()!.GetParent()!.GetParent()!.visible = false;
+
 })();

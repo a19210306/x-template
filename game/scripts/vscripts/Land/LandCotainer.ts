@@ -1,4 +1,4 @@
-import { climate } from '../System/decorate'
+import  * as Enum  from '../System/Enum'
 
 type cosmetics = Record<string,string>
 
@@ -7,7 +7,7 @@ export interface Landtemplate {
     _LandInstance:CBaseEntity
     _Cosmetics:cosmetics
     _GetAllCosmetics:()=>string[]
-    _climate:climate
+    _climate:Enum.climate
 }
 
 export class LandCotainerManager {

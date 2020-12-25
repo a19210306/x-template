@@ -1,3 +1,5 @@
+import  * as Enum  from './Enum'
+
 export class DecoratorFactory {
     _climat_erange: number;
 
@@ -5,8 +7,7 @@ export class DecoratorFactory {
         this._climat_erange = 100;
     }
 
-    GetModel():string{
-        this.CurveGenerator()
+    GetRandomModel():string{
         return 
     }
 
@@ -24,26 +25,11 @@ export class DecoratorFactory {
     }
 }
 
-export enum model_type {
-    "石头",
-    "草",
-    "杂物",
-    "树"
-}
-
-export enum climate {
-    "寒带",
-    "亚寒带",
-    "温带",
-    "温热带",
-    "热带"
-}
-
 type Decoratetype = {
     season_value: number;      //季节中心
     range: number;      //出现的范围
     model: string[] | string;      //模型地址
-    type: model_type;  //模型类型
+    type: Enum.model_type;  //模型类型
     elevation:[number,number]|"all"|"defaul"  // 海拔范围 1=中心 2=范围
 }[];
 
@@ -56,7 +42,7 @@ export const DecorateTable: Decoratetype = [
                 "models/lowpoly_tree/sm_tree_log_01.vmdl",
 
         ],
-        type: model_type.杂物,  // 温带杂物
+        type: Enum.model_type.杂物,  // 温带杂物
         elevation:"defaul"
     },
     {
@@ -80,7 +66,7 @@ export const DecorateTable: Decoratetype = [
         "models/lowpoly_tree/sm_tree_swamp_branch_01.vmdl",
         "models/lowpoly_tree/sm_tree_swamp_branch_02.vmdl",
         ],
-        type: model_type.杂物,  // 温热带杂物
+        type: Enum.model_type.杂物,  // 温热带杂物
         elevation:"defaul"
     },  
     {
@@ -95,7 +81,7 @@ export const DecorateTable: Decoratetype = [
         "models/lowpoly_tree/sm_tree_vines_03.vmdl",
         "models/lowpoly_tree/sm_tree_vines_04.vmdl"
         ],
-        type: model_type.杂物,  // 热带杂物
+        type: Enum.model_type.杂物,  // 热带杂物
         elevation:"defaul"
     },
     {
@@ -109,7 +95,7 @@ export const DecorateTable: Decoratetype = [
                 "models/lowpoly_tree/sm_tree_log_02.vmdl",
                 "models/lowpoly_tree/sm_tree_pine_base_01.vmdl"
         ],
-        type: model_type.草,  // 温带普通草
+        type: Enum.model_type.草,  // 温带普通草
         elevation:"defaul"
     },
     {
@@ -142,7 +128,7 @@ export const DecorateTable: Decoratetype = [
                 "models/lowpoly_tree/sm_terrain_rubble_pebbles_02.vmdl",
                 "models/lowpoly_tree/sm_terrain_rubble_pebbles_03.vmdl",
         ],
-        type: model_type.石头,  // 热带石头
+        type: Enum.model_type.石头,  // 热带石头
         elevation:'all'
     },
     {
@@ -158,7 +144,7 @@ export const DecorateTable: Decoratetype = [
             "models/lowpoly_tree/sm_terrain_rubble_pebbles_03.vmdl",
 
         ],
-        type: model_type.石头,  // 温带石头
+        type: Enum.model_type.石头,  // 温带石头
         elevation:'all'
     },
     {
@@ -170,7 +156,7 @@ export const DecorateTable: Decoratetype = [
             "models/lowpoly_tree/sm_terrain_grassedge_03.vmdl",
             "models/lowpoly_tree/sm_terrain_grassedge_04.vmdl",
         ],
-        type: model_type.石头,  // 温带石头
+        type: Enum.model_type.石头,  // 温带石头
         elevation:'all'
     },
     {
@@ -181,7 +167,7 @@ export const DecorateTable: Decoratetype = [
             "models/lowpoly_tree/sm_tree_02.vmdl",
             "models/lowpoly_tree/sm_tree_tallround_01.vmdl",
         ],
-        type: model_type.树,  // 温带树
+        type: Enum.model_type.树,  // 温带树
         elevation:'defaul'
     },
     {
@@ -200,7 +186,7 @@ export const DecorateTable: Decoratetype = [
             "models/lowpoly_tree/sm_tree_round_04.vmdl",
             "models/lowpoly_tree/sm_tree_round_05.vmdl"
         ],
-        type: model_type.树,  // 温热带树
+        type: Enum.model_type.树,  // 温热带树
         elevation:'defaul'
     }
 
