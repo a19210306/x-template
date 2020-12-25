@@ -68,13 +68,11 @@ export class GameMode {
  
 
     test(){
-       let bbb = new Graphs<number>()
-       bbb.AddNode(123,"map1")
-       bbb.AddNode(3949,"hahah")
-       print(bbb.Count)
-       bbb.AddEdge("map1","hahah")
+
        
     }
+
+
 
     dota_player_pick_hero(keys: DotaPlayerPickHeroEvent){
         let hero = EntIndexToHScript(keys.heroindex as EntityIndex) as CDOTA_BaseNPC_Hero;

@@ -1,15 +1,13 @@
+import { climate } from '../System/decorate'
 
-export enum climate {"极炎热","炎热","温带","寒冷","极寒冷"}
 type cosmetics = Record<string,string>
 
 export interface Landtemplate {
     _name:string
-    _point:Vector
     _LandInstance:CBaseEntity
-    _Climate:climate
     _Cosmetics:cosmetics
     _GetAllCosmetics:()=>string[]
-    _Collisions:any
+    _climate:climate
 }
 
 export class LandCotainerManager {

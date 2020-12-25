@@ -1,0 +1,25 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "global_lit_simple.vfx"
+
+	//---- Enable wind ----
+	F_ENABLE_WIND 1
+
+	//---- Color ----
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	TextureColor "materials/lowpoly_tree/polygonnature_01_copy.tga"
+
+	//---- Wind ----
+	g_flWindFlexibility "0.149"
+	g_flWindHighFrequencyEffects "3.065"
+	g_flWindLinearity "1.000"
+	g_flWindLowFrequencyEffects "1.077"
+	g_flWindSpeedMultiplier "0.299"
+	TextureWindMaskHigh "materials/default/default_mask.tga"
+	TextureWindMaskLow "materials/default/default_mask.tga"
+	TextureWindRandomNoise "[1.000000 1.000000 1.000000 0.000000]"
+}
