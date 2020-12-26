@@ -8,6 +8,8 @@ import { IocCotainer } from "./System/IOCotainer";
 import { Stack } from "./utils/Stack";
 import { Linkedlist } from "./utils/linkedlist";
 import { Graphs } from "./utils/Graph";
+import { DecorateTable, DecoratorFactory } from './System/Decorate';
+import  * as Enum  from './System/Enum'
 
 
 
@@ -68,8 +70,16 @@ export class GameMode {
  
 
     test(){
-
-       
+        let Dec = new DecoratorFactory(50)
+        let models = Dec.GetRandomModel()
+         table.foreach(models,(k,v)=>{
+        let ThisRandom = math.random()
+             if(ThisRandom < k)
+             {
+                 print(table.random(models[k][Enum.model_type.石头].models))
+                 return 'stop'
+             }
+         })
     }
 
 

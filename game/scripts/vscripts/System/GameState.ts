@@ -1,6 +1,8 @@
 import { IocCotainer, RegisterIoc } from "./IOCotainer";
 import { GenerateMap } from '../Land/2DGenerator';
 import { climate_vector } from "./Enum";
+import { Land, LandCotainerManager } from '../Land/LandCotainer';
+import { IslandTetris, Landtetris } from '../Land/LandColisionList';
 
 export class GameStateData {
 
@@ -234,12 +236,24 @@ export class GameStart implements GameStatePackage {
     CreateMiniMap() {
         Entities.FindAllByName("init_land").forEach((land) => {
             let vec = land.GetAbsOrigin();
-            (land as CBaseModelEntity).SetSkin(RandomInt(0, 3));
-            let season_value = (climate_vector.寒带起始坐标 as Vector).__sub(vec).Length2D() / 463
-            DebugDrawText(Vector(vec.x,vec.y,200),"当前值"+season_value,false,989888)
-            DebugDrawCircle(Vector(vec.x,vec.y,200),Vector(255,255,255),100,100,false,99999)
-            print("~~~~~~~~~~~~~~~~~vec")
-            print(Vector(-16384,16384,0).__sub(Vector(16384,-16384,0)).Length2D())
+            let _x_y = [0,0]
+            let name = land.GetChildren()[0].GetName()
+            if(string.find(name,"is").length > 0){
+                table.foreach(IslandTetris,(k,v)=>{
+                    if(v.name == name){
+                        _x_y = [v.x,v.y]
+                        return 'stop'
+                    }
+                })
+            }else{
+                table.foreach(Landtetris,(k,v)=>{
+                    if(v.name == name){
+                        _x_y = [v.x,v.y]
+                        return 'stop'
+                    }
+                })
+            }
+            LandCotainerManager.getinstance().registerLand(RandomInt(0,99998).toString(),new Land(land as CBaseModelEntity,vec,_x_y[0],_x_y[1]))
             // this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles().y}
         });
         CustomNetTables.SetTableValue('map', 'LandData', this._LandData);

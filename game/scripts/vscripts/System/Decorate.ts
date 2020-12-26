@@ -1,25 +1,48 @@
+import { reloadable } from '../lib/tstl-utils';
 import  * as Enum  from './Enum'
 
+const range = 20
+
+type brobabilityTabletype = {
+    models:string[]
+}
+
+@reloadable
 export class DecoratorFactory {
-    _climat_erange: number;
+    _season_value:number;
 
-    constructor() {
-        this._climat_erange = 100;
+    constructor(season_value:number) {
+        this._season_value = season_value
     }
 
-    GetRandomModel():string{
-        return 
+    GetRandomModel():Record<number,Record<number,brobabilityTabletype>>{
+        let tmpTable:Record<number,Record<number,brobabilityTabletype>> = {}
+        let curve = this.CurveGenerator()
+        let newCurve = curve.forEach((value,index)=>{
+            if(value && value > 0){
+                let num = math.floor(value * 1000) / 1000
+                tmpTable[num] = {}
+                 table.foreach(DecorateTable,(k,v)=>{
+                    let min = v.season_value - v.range
+                    let max = v.season_value + v.range
+                    if(index < max && index > min){
+                        tmpTable[math.floor(value * 1000) / 1000 ][v.type] = { models:v.model }
+                    }
+                })
+            }
+        })
+        return tmpTable
     }
 
-    CurveGenerator(season_value: number, range: number): number[] {
+    CurveGenerator(): number[] {
         let curve: number[] = [];
-        for (let i = season_value - range; i < (season_value + range / 2); i++) {
-            if (math.abs(i - season_value) > range) {
+        for (let i = this._season_value -range; i < (this._season_value + range / 2); i++) {
+            if (math.abs(i - this._season_value) > range) {
                 print(i);
                 curve[i] = 0;
                 continue;
             }
-            curve[i] = 0.9 / math.max(math.abs(i - season_value + 1), 1);
+            curve[i] = 0.9 / math.max(math.abs(i - this._season_value + 1), 1);
         }
         return curve;
     }
@@ -28,7 +51,7 @@ export class DecoratorFactory {
 type Decoratetype = {
     season_value: number;      //季节中心
     range: number;      //出现的范围
-    model: string[] | string;      //模型地址
+    model: string[];      //模型地址
     type: Enum.model_type;  //模型类型
     elevation:[number,number]|"all"|"defaul"  // 海拔范围 1=中心 2=范围
 }[];
@@ -142,7 +165,6 @@ export const DecorateTable: Decoratetype = [
             "models/lowpoly_tree/sm_terrain_rubble_pebbles_01.vmdl",
             "models/lowpoly_tree/sm_terrain_rubble_pebbles_02.vmdl",
             "models/lowpoly_tree/sm_terrain_rubble_pebbles_03.vmdl",
-
         ],
         type: Enum.model_type.石头,  // 温带石头
         elevation:'all'
@@ -189,6 +211,4 @@ export const DecorateTable: Decoratetype = [
         type: Enum.model_type.树,  // 温热带树
         elevation:'defaul'
     }
-
-
 ];
