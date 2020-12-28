@@ -6,7 +6,6 @@ export class Stack<T> {
     private _size:number
 
     constructor(){
-        print("haha")
         this._stack_data = []
         this._size = 0
     }

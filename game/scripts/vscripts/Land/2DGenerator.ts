@@ -58,8 +58,9 @@ export class GenerateMap {
         let islandend = false;
         IocCotainer.instance.resolve<InitMap>("InitMap").SetProgress = {current_name:'创造陆地',current_render_count:0,max_render_count:300}
         Timers.CreateTimer(()=>{
-            let PresentCreateland = LandList.length == 0 ? undefined : this.CreateLand(true)
-            if (PresentCreateland && tmp.length < __LandCount) {
+            if (tmp.length < __LandCount) {
+                let PresentCreateland = this.CreateLand(true)
+                if(PresentCreateland == null) return 0.03;
                 if (tmp.length == 0) {
                     tmp.push(PresentCreateland);
                     table.foreach(PresentCreateland.package, (k, v: { x?: number; y?: number; }) => {
@@ -102,7 +103,7 @@ export class GenerateMap {
         if (tmp.length >= __LandCount +__is_Land_count) {
             table.foreach(tmp, (index, v: CreateLandNamePackage) => {
                 print(index + "index")
-                Timers.CreateTimer(index/3,()=>{
+                Timers.CreateTimer(index/10,()=>{
                     print(v.name)
                     DOTA_SpawnMapAtPosition(string.find(v.name,"is").length > 0 ? "island/" + v.name : "land/" + v.name, Vector(v.ABSorigin.x *2048,v.ABSorigin.y * 2048), false, () => { print("create nav"); }, () => { }, undefined);
                     IocCotainer.instance.resolve<InitMap>("InitMap").ProgressCountADD()

@@ -1,8 +1,10 @@
 import { IocCotainer, RegisterIoc } from "./IOCotainer";
 import { GenerateMap } from '../Land/2DGenerator';
-import { climate_vector } from "./Enum";
+import * as Enum from "./Enum";
 import { Land, LandCotainerManager } from '../Land/LandCotainer';
 import { IslandTetris, Landtetris } from '../Land/LandColisionList';
+import { SeasonSort } from './Enum';
+import { DecoratorFactory } from '../Land/Decorate';
 
 export class GameStateData {
 
@@ -196,16 +198,19 @@ export class InitMap implements GameStatePackage {
 
 @RegisterIoc("GameStart", ["Scenes", "GameEnd"], true)
 export class GameStart implements GameStatePackage {
-    _Context: Scenes;
-    _StateName: State2Name;
-    _NextState: GameStatePackage;
-    _remaining: number;
-    _LandData: Record<string, { widthindex: number, heightindex: number, angle: number; }>;
+     _Context: Scenes;
+     _StateName: State2Name;
+     _NextState: GameStatePackage;
+     _remaining: number;
+     _LandData: Record<string, { widthindex: number, heightindex: number, angle: number; }>;
+     _Coliision:CDOTA_BaseNPC;
 
     constructor(context: Scenes, time: number | -1 = -1, NextState: GameStatePackage) {
         this._Context = context;
         this._StateName = State2Name.游戏开始;
         this._LandData = {};
+        this._Coliision = CreateUnitByName("npc_dota_hero_crystal_maiden", Vector(0,0,0), false, null, null, DOTATeam_t.DOTA_TEAM_GOODGUYS)
+        this._Coliision.SetModelScale(0.2)
         print("GameStart = " + context);
     }
 
@@ -217,6 +222,7 @@ export class GameStart implements GameStatePackage {
 
     End() {
         this._Context.ChangeState = this._NextState;
+        this._Coliision.RemoveSelf()
     }
 
     Run() {
@@ -253,9 +259,20 @@ export class GameStart implements GameStatePackage {
                     }
                 })
             }
-            LandCotainerManager.getinstance().registerLand(RandomInt(0,99998).toString(),new Land(land as CBaseModelEntity,vec,_x_y[0],_x_y[1]))
+            let origin = land.GetAbsOrigin();
+            let season_value = Enum.climate_vector.寒带起始坐标.__sub(origin).Length2D() / 463;
+            let index = math.floor(season_value / 10);
+            let random = RandomInt(-2, 2);
+            let lastindex = random + index;
+            lastindex > Enum.SeasonSort.length ? lastindex = Enum.SeasonSort.length : lastindex;
+            lastindex < 0 ? lastindex = 0 : lastindex;
+            (land as CBaseModelEntity).SetSkin(lastindex); // 根据气候不同给予陆地皮肤
+            DebugDrawText(Vector(origin.x, origin.y, 200), "当前值" + season_value, false, 989888);
+            DebugDrawCircle(Vector(origin.x, origin.y, 200), Vector(255, 255, 255), 100, 100, false, 99999);
+            LandCotainerManager.getinstance().registerLand(RandomInt(0,99998).toString(),new Land(land as CBaseModelEntity,vec,_x_y[0],_x_y[1],season_value))
             // this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles().y}
         });
+        LandCotainerManager.getinstance().CreateDecorate();
         CustomNetTables.SetTableValue('map', 'LandData', this._LandData);
     }
 
@@ -324,7 +341,6 @@ export class Scenes {
         });
         print(this._time);
         if (GameRules.IsGamePaused() || !this._GameStatePackage) {
-            print("1");
             return FrameTime();
         }
         if (!this._GameStatePackage.Run()) {

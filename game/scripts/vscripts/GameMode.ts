@@ -8,7 +8,7 @@ import { IocCotainer } from "./System/IOCotainer";
 import { Stack } from "./utils/Stack";
 import { Linkedlist } from "./utils/linkedlist";
 import { Graphs } from "./utils/Graph";
-import { DecorateTable, DecoratorFactory } from './System/Decorate';
+import { DecorateTable, DecoratorFactory } from './Land/Decorate';
 import  * as Enum  from './System/Enum'
 
 

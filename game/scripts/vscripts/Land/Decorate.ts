@@ -1,5 +1,8 @@
 import { reloadable } from '../lib/tstl-utils';
-import  * as Enum  from './Enum'
+import  * as Enum  from '../System/Enum'
+import { AllLand } from './LandCotainer';
+import { Stack } from '../utils/Stack';
+import { InitDecorate } from './InitDecorate';
 
 const range = 20
 
@@ -18,7 +21,8 @@ export class DecoratorFactory {
     GetRandomModel():Record<number,Record<number,brobabilityTabletype>>{
         let tmpTable:Record<number,Record<number,brobabilityTabletype>> = {}
         let curve = this.CurveGenerator()
-        let newCurve = curve.forEach((value,index)=>{
+
+        table.foreach(curve,(index,value)=>{
             if(value && value > 0){
                 let num = math.floor(value * 1000) / 1000
                 tmpTable[num] = {}
@@ -36,9 +40,8 @@ export class DecoratorFactory {
 
     CurveGenerator(): number[] {
         let curve: number[] = [];
-        for (let i = this._season_value -range; i < (this._season_value + range / 2); i++) {
+        for (let i = this._season_value -range; i < (this._season_value + range); i++) {
             if (math.abs(i - this._season_value) > range) {
-                print(i);
                 curve[i] = 0;
                 continue;
             }
