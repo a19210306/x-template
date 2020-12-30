@@ -17,7 +17,7 @@ Layer0
 	//---- Flow Normals ----
 	g_flNormalUvScale "1000.000"
 	g_flWorldPositionScale "1.642"
-	TextureFlow "materials/water_texture/13843.jpg"
+	TextureFlow "materials/water_texture/water.jpg"
 
 	//---- Low End ----
 	g_flLowEndBaseBloom "0.158"
@@ -31,12 +31,12 @@ Layer0
 	g_vLowEndSurfaceColor "[0.733333 1.000000 0.890196 0.000000]"
 
 	//---- Normal Map ----
-	g_flBumpStrength "3.731"
+	g_flBumpStrength "1.463"
 	g_flScroll1X "0.059"
 	g_flScroll1Y "0.147"
 	g_flScroll2X "0.191"
 	g_flScroll2Y "0.176"
-	TextureNormal "materials/water_texture/4039-normal.jpg"
+	TextureNormal "materials/water_texture/water.jpg"
 
 	//---- Reflections ----
 	g_flReflectance "0.011"
@@ -45,7 +45,7 @@ Layer0
 
 	//---- Refractions ----
 	g_flRefractionAmount "0.106"
-	g_flWaterDepth "191.489"
+	g_flWaterDepth "256.098"
 	g_flWaterFogShadowFactor "0.074"
 	g_vRefractionTint "[0.933333 1.000000 0.980392 0.000000]"
 	g_vWaterFogColor "[0.988235 0.941177 1.000000 0.000000]"

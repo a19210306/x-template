@@ -54,7 +54,7 @@ export class GameMode {
     private configure(): void {
         GameRules.SetCustomGameTeamMaxPlayers(DOTATeam_t.DOTA_TEAM_GOODGUYS, 3);
         GameRules.SetCustomGameTeamMaxPlayers(DOTATeam_t.DOTA_TEAM_BADGUYS, 3);
-        GameRules.GetGameModeEntity().SetFogOfWarDisabled(true)
+        GameRules.GetGameModeEntity().SetFogOfWarDisabled(false)
         GameRules.SetShowcaseTime(0);
     }
 
