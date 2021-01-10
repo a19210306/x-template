@@ -1,0 +1,6 @@
+#base units_template.txt
+
+"DOTAUnits" 
+{
+
+}

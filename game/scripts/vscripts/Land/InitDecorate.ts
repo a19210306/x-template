@@ -19,17 +19,17 @@ export class InitDecorate {
         Timers.CreateTimer(()=>{
             let randomV = land.vec.__add(Vector(RandomInt(-land.range , land.range ),RandomInt(-land.range , land.range),0));
             let h = GetGroundHeight(randomV, IocCotainer.instance.resolve<GameStart>("GameStart")._Coliision);
-            if(h < 25 || h > 50) return 0.0001
-            let lastvec = Vector(randomV.x, randomV.y, h - 3);
-            let part = ParticleManager.CreateParticle("particles/decorate/tree/plam.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,null)
+            if(h < 70 ) return 0.0001
+            let lastvec = Vector(randomV.x, randomV.y, h - 2);
+            let part = ParticleManager.CreateParticle("particles/decorate/tree/season_60_70.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,null)
             ParticleManager.SetParticleControl(part,0,lastvec)
             ParticleManager.SetParticleControl(part,2,Vector(RandomFloat(0.7,1),0,0))
             ParticleManager.SetParticleControl(part,3,Vector(RandomFloat(0.7,1),0,0))
             ParticleManager.SetParticleControl(part,4,Vector(RandomFloat(0.7,1),0,0))
             landtree.push(part)
             print(landtree.length)
-            if(landtree.length > 400){
-                //this.CreateSundries(land)
+            if(landtree.length > 100){
+                // this.CreateSundries(land)
                 return 
             }
             // table.foreach(models, (k, v) => {
@@ -62,15 +62,35 @@ export class InitDecorate {
                 let randomV = land.vec.__add(Vector(RandomInt(-land.range , land.range ),RandomInt(-land.range , land.range),0));
                 let h = GetGroundHeight(randomV, IocCotainer.instance.resolve<GameStart>("GameStart")._Coliision);
                 if(h < 50) return 0.001
-                let lastvec = Vector(randomV.x, randomV.y, h - 3);
+                let lastvec = Vector(randomV.x, randomV.y, h - 2);
                 let part = ParticleManager.CreateParticle("particles/decorate/tree/tropical_plant.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,null)
                 ParticleManager.SetParticleControl(part,0,lastvec)
                 landSundries.push(part)
                 print("sundries")
                 print(landSundries.length)
-                if(landSundries.length > 300){
+                if(landSundries.length > 100){
+                    this.tmpCreate(land)
                     return 
                 }
                 return 0.001
     })}
+
+    static tmpCreate(land:{vec:Vector,range:number,season:number}){
+        let landSundries:number[] = []
+        let delay = 0
+        Timers.CreateTimer(()=>{
+            let randomV = land.vec.__add(Vector(RandomInt(-land.range , land.range ),RandomInt(-land.range , land.range),0));
+            let h = GetGroundHeight(randomV, IocCotainer.instance.resolve<GameStart>("GameStart")._Coliision);
+            if(h < 10 || h > 100) return 0.001
+            let lastvec = Vector(randomV.x, randomV.y, h - 2);
+            let part = ParticleManager.CreateParticle("particles/decorate/tree/plam.vpcf",ParticleAttachment_t.PATTACH_WORLDORIGIN,null)
+            ParticleManager.SetParticleControl(part,0,lastvec)
+            landSundries.push(part)
+            print("sundries")
+            print(landSundries.length)
+            if(landSundries.length > 50){
+                return 
+            }
+            return 0.001
+})}
 }

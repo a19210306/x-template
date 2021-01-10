@@ -1,4 +1,3 @@
-import { __LandbetweenDistance, __LandAngle, __LandCount, __LandPrefixName, __border, __land_beetween_distance, __is_Land_count } from './Const';
 import { reloadable } from '../lib/tstl-utils';
 import { IslandTetris, Landtetris } from "./LandColisionList";
 import { IocCotainer } from '../System/IOCotainer';
@@ -9,6 +8,8 @@ type CreateLandNamePackage = { name: string, package: Trypackage, ABSorigin: Vec
 
 
 let LandList = Landtetris.map(list=>list)
+let __LandCount = 4
+let __is_Land_count = 5
 
 @reloadable
 export class GenerateMap {
@@ -25,7 +26,7 @@ export class GenerateMap {
         this._map_data = [];
         this._original = 32768;
         this._size = this._original / 2048 / 2;
-        this._LandPrefixName = __LandPrefixName;
+        this._LandPrefixName = "";
         this._Selected = []
         this.InitMap2D();
         this.Generator();
@@ -81,8 +82,7 @@ export class GenerateMap {
                     });
                 }
             }
-        print(LandList.length)
-        print("llllllllength" + tmp.length)
+
         if (tmp.length >= __LandCount && tmp.length <  __LandCount +__is_Land_count){
             print("island")
             let PresentCreateland = this.CreateLand(false);

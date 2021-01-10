@@ -7,7 +7,7 @@ import { Stack } from "./utils/Stack";
 Object.assign(getfenv(), {
     Activate: GameMode.Activate,
     Precache: GameMode.Precache,
-    Scenes:GameState,
+    //Scenes:GameState,
     // Stack:Stack,
     // LinkedList:Linkedlist,
     // Graphs:Graphs

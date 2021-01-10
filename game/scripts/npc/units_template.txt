@@ -49,5 +49,26 @@
 		"HasInventory" "1"
 
 	}
+	"npc_dota_base_test" {
+		"Cost" "1"
+		"BaseClass" "npc_dota_creature"
+		"Model" "models/test/landbottom.vmdl"
+		"ModelScale" "1"
+		"Creature" {
+			"AttachWearables" {
+
+			}
+
+		}
+		"Ability1" ""
+		"Ability2" ""
+		"Ability3" ""
+		"Ability4" ""
+		"Ability5" ""
+		"Ability6" ""
+		"BoundsHullName" "DOTA_HULL_SIZE_HERO"
+		"RingRadius" "70"
+
+	}
 
 }

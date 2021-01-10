@@ -2,7 +2,6 @@ import { reloadable } from "./lib/tstl-utils";
 import './lib/timers'
 import "./abilities/modifier/ship_move_speed"
 import './utils/table'
-import { __default_ground, __floorHeight } from './Land/Const';
 import { AwaitStart, initCharacter, Scenes } from './System/GameState';
 import { IocCotainer } from "./System/IOCotainer";
 import { Stack } from "./utils/Stack";
@@ -25,6 +24,8 @@ declare global {
         AllTeams: table;
         IDHeroMap: table;
         TeamHeroMap: table;
+        particle:ParticleID[]
+        [key:string]:any;
     }
 }
 
@@ -42,6 +43,7 @@ export class GameMode {
         GameRules.AllTeams = {}
         GameRules.IDHeroMap = {}
         GameRules.TeamHeroMap = {}
+        GameRules.particle = []
     }
     constructor() {
         this.configure();
@@ -49,6 +51,7 @@ export class GameMode {
         ListenToGameEvent("npc_spawned", event => this.OnNpcSpawned(event), undefined);
         ListenToGameEvent("dota_player_pick_hero", (event) => this.dota_player_pick_hero(event), undefined);
         CustomGameEventManager.RegisterListener('test',(id,player) =>{this.test()})
+        CustomGameEventManager.RegisterListener('test2',(id,player) =>{this.test2()})
     }
 
     private configure(): void {
@@ -69,17 +72,37 @@ export class GameMode {
     private OnNpcSpawned(event: NpcSpawnedEvent) {}
  
 
-    test(){
-        let Dec = new DecoratorFactory(50)
-        let models = Dec.GetRandomModel()
-         table.foreach(models,(k,v)=>{
-        let ThisRandom = math.random()
-             if(ThisRandom < k)
-             {
-                 print(table.random(models[k][Enum.model_type.石头].models))
-                 return 'stop'
-             }
-         })
+    public test(){
+        if(GameRules["城市底座"]) {
+            if((GameRules["城市底座"] as CDOTA_BaseNPC).IsAlive())
+            (GameRules["城市底座"] as CDOTA_BaseNPC).RemoveSelf()
+        }
+        GameRules["城市底座"] = CreateUnitByName("npc_dota_base_test",Vector(-2000,2000,1000),true,undefined,undefined,DOTATeam_t.DOTA_TEAM_NOTEAM);
+        (GameRules["城市底座"] as CDOTA_BaseNPC).SetAbsOrigin(Vector(-608,20,-80));
+        (GameRules["城市底座"] as CDOTA_BaseNPC).SetAbsAngles(0,90,0)
+        Timers.CreateTimer(2,()=>{
+            let id = ParticleManager.CreateParticle('particles/test123.vpcf',ParticleAttachment_t.PATTACH_POINT,GameRules["城市底座"])
+            ParticleManager.SetParticleControlEnt(id,0,GameRules["城市底座"],ParticleAttachment_t.PATTACH_POINT,"port",Vector(0,0,0),false)
+            GameRules.particle.push(id)
+        })
+        for(let i = 1 ; i <=  8 ; i++)
+        {
+            let b = i
+            Timers.CreateTimer(b,()=>{
+                let id2 = ParticleManager.CreateParticle('particles/house.vpcf',ParticleAttachment_t.PATTACH_POINT,GameRules["城市底座"])
+                ParticleManager.SetParticleControlEnt(id2,0,GameRules["城市底座"],ParticleAttachment_t.PATTACH_POINT,"fangzi_"+ b,Vector(0,0,0),false)
+                GameRules.particle.push(id2)
+            })
+        }
+
+        
+    }
+
+    test2(){
+        GameRules.particle.forEach((particle)=>{
+            ParticleManager.DestroyParticle(particle,false)
+            ParticleManager.ReleaseParticleIndex(particle)
+        })
     }
 
 
@@ -107,7 +130,7 @@ function huanzhuang(entiti:CDOTA_BaseNPC_Hero){
     entiti.SetModel(modelname);
     entiti.SetOriginalModel(modelname);
     entiti.SetModelScale(4)
+    entiti.SetAttackCapability(DOTAUnitAttackCapability_t.DOTA_UNIT_CAP_NO_ATTACK)
 }
-
 
 

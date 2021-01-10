@@ -269,11 +269,11 @@ export class GameStart implements GameStatePackage {
             (land as CBaseModelEntity).SetSkin(lastindex); // 根据气候不同给予陆地皮肤
             DebugDrawText(Vector(origin.x, origin.y, 200), "当前值" + season_value, false, 989888);
             DebugDrawCircle(Vector(origin.x, origin.y, 200), Vector(255, 255, 255), 100, 100, false, 99999);
-            LandCotainerManager.getinstance().registerLand(RandomInt(0,99998).toString(),new Land(land as CBaseModelEntity,vec,_x_y[0],_x_y[1],season_value))
+            //LandCotainerManager.getinstance().registerLand(RandomInt(0,99998).toString(),new Land(land as CBaseModelEntity,vec,_x_y[0],_x_y[1],season_value))
             // this._LandData[land.GetChildren()[0].GetName()] = {widthindex:vec.x,heightindex:vec.y,angle:land.GetAngles().y}
         });
-        LandCotainerManager.getinstance().CreateDecorate();
-        CustomNetTables.SetTableValue('map', 'LandData', this._LandData);
+        //LandCotainerManager.getinstance().CreateDecorate();
+        //CustomNetTables.SetTableValue('map', 'LandData', this._LandData);
     }
 
 }

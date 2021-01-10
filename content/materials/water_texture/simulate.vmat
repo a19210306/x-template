@@ -39,14 +39,14 @@ Layer0
 	TextureNormal "materials/water_texture/water.jpg"
 
 	//---- Reflections ----
-	g_flReflectance "0.011"
-	g_flReflectionAmount "0.128"
+	g_flReflectance "0.023"
+	g_flReflectionAmount "0.159"
 	g_vReflectionTint "[0.988235 1.000000 0.788235 0.000000]"
 
 	//---- Refractions ----
-	g_flRefractionAmount "0.106"
-	g_flWaterDepth "256.098"
-	g_flWaterFogShadowFactor "0.074"
+	g_flRefractionAmount "0.159"
+	g_flWaterDepth "621.495"
+	g_flWaterFogShadowFactor "0.444"
 	g_vRefractionTint "[0.933333 1.000000 0.980392 0.000000]"
 	g_vWaterFogColor "[0.988235 0.941177 1.000000 0.000000]"
 
